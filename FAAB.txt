@@ -41,18 +41,20 @@ from mesa.time import RandomActivation
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from mesa.space import ContinuousSpace
+from mesa.space import MultiGrid
 from mesa.time import RandomActivation
 
 ###### model #######
 class Forest (Model): 
     def __init__ (self, ts, width = 10, height = 10):
         self.ntrees = ts 
+        self.width = width
+        self.height = height
         self.schedule = RandomActivation(self) 
-        self.space = ContinuousSpace(width, height, True)
+        self.grid = MultiGrid(self.height, self.width, torus = True)
         for i in range(self.ntrees): 
-            x = random.random() * self.space.x_max
-            y = random.random() * self.space.y_max 
+            x = random.randrange(1,11)
+            y = random.randrange(1,11)
             pos = (x, y)
             tree = Tree(i, self, pos)
             self.schedule.add(tree) 
@@ -73,6 +75,7 @@ class Tree (Agent):
 
 ## test
 losced = Forest(5)
+
 losced.step()
 
 ## okay, seems to work. How do we visualize this?
