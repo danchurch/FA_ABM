@@ -1,27 +1,20 @@
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid
 
+from FAAB import Forest, Tree
+
 def agent_portrayal(agent):
-    portrayal = {"Shape": "circle", 
-        "Color": "red", 
-        "Filled": "true",
+    portrayal = {
+        "Shape": "circle", 
+        "r":.75,
+        "Color": "Red",
         "Layer": 0,
-        "r": 0.5 
+        "Filled": "true",
         }
-    return protrayal
+    return portrayal
 
-grid = CanvasGrid(agent_portrayal, 10, 10, 500, 500)
+canvas_element = CanvasGrid(agent_portrayal, 10,10,200,200)
 
-server = ModularServer(Forest, 
-                        [grid],
-                        "Testing Trees",
-                        100, 10, 10
-                        )
-
-server.launch()
+server = ModularServer(Forest, [canvas_element], "Trees", ts=3)
 
 
-
-boid_canvas = SimpleCanvas(boid_draw, 500, 500)
-server = ModularServer(BoidModel, [boid_canvas], "Boids",
-100, 100, 100, 5, 10, 2)
