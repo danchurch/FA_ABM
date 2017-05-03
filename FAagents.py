@@ -42,8 +42,9 @@ class Wood (Agent):
     def __init__(self, unique_id, model, pos, cellulose = 10): 
         super().__init__(unique_id, model)
         self.cellulose = cellulose
+        self.pos = pos
     def step(self):
-        print(self.unique_id, self.pos, self.cellulose, type(self)) 
+        print(self.unique_id, self.pos, type(self)) 
 
 ## test
 if __name__ == '__main__':
