@@ -1,8 +1,5 @@
 ## txtbook for first attempts at a FA ABM:
 
-## the goal for the day is to make some trees
-
-
 ## can we put them in a landscape?
 
 from mesa import Agent, Model
@@ -15,9 +12,10 @@ from mesa.time import RandomActivation
 
 ###### model #######
 class Forest (Model): 
-    def __init__ (self, ts=10, fs=2, width = 10, height = 10):
+    def __init__ (self, ts=10, fs=2, ws = 5, width = 10, height = 10):
         self.ntrees = ts 
         self.nfungi = fs 
+        self.nwood = ws 
         self.schedule = RandomActivation(self) 
         self.grid = MultiGrid(width, height, torus = True)
         for i in range(self.nfungi): 
@@ -34,6 +32,13 @@ class Forest (Model):
             tree = Tree(i, self, pos)
             self.schedule.add(tree) 
             self.grid.place_agent(tree, (x,y))
+        for i in range(self.ntrees): 
+            x = random.randrange(width)
+            y = random.randrange(height)
+            pos = (x, y)
+            wood = Wood(i, self, pos)
+            self.schedule.add(wood) 
+            self.grid.place_agent(wood, (x,y))
     def step(self): self.schedule.step() 
 
 ##### trees ######
@@ -66,12 +71,16 @@ class Fungus (Agent):
         #pass 
 
 ###### wood #########
-
+class Wood (Agent):
+    def __init__(self, unique_id, model, pos, cellulose = 10): 
+        super().__init__(unique_id, model)
+        self.cellulose = cellulose
+    def step(self):
+        print(self.unique_id, self.pos, self.cellulose, type(self)) 
 
 ## test
-losced = Forest(5)
-losced.step()
+if __name__ == '__main__':
+    losced = Forest(3)
+    losced.step()
 
-## okay, seems to work. How do we visualize this?
 
-## separate server file...
