@@ -1,6 +1,7 @@
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid
-from FAAB import Forest, Tree, Fungus
+from FAagents import Tree, Wood, Fungus
+from FAmodel import Forest
 
 def agent_portrayal(agent):
     if agent is None: 
