@@ -1,6 +1,7 @@
 from mesa import Agent, Model
 from mesa.time import RandomActivation
 import random
+import numpy as np
 from mesa.space import MultiGrid
 from mesa.time import RandomActivation
 from FAagents import Tree, Wood, Fungus
@@ -41,17 +42,29 @@ class Forest (Model):
                 self.schedule.add(wood) 
 ############
     def make_fungi(self):
-        for i in range(self.nfungi): 
-            x = random.randrange(self.grid.width)
-            y = random.randrange(self.grid.height)
-            pos = (x, y)
+#        for i in range(self.nfungi): 
+#        while sum([ type(i)==Fungus for i in losced.schedule.agents ]) < self.nfungi:
+        for i in range(100):
+#            x = random.randrange(self.grid.width)
+#            y = random.randrange(self.grid.height)
+#            pos = (x, y)
+            pos = self.findsubstrate(Wood)
+            print("fungus",pos)
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  ## change this to add to cellulose of existing wood
-            elif any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
+            #elif any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
+            else:
                 fungus = Fungus(i, self, pos)
                 self.schedule.add(fungus) 
-                self.grid.place_agent(fungus, (x,y))
-
+                self.grid.place_agent(fungus, pos)
+    def findsubstrate (self, substrate):
+        sub = [ type(i)==substrate for i in self.schedule.agents ]  ## is wood?
+        subnp = np.array(sub, dtype=bool) ## np array, boolean
+        Agnp = np.array(self.schedule.agents) ## np array of agents
+        Subs = Agnp[subnp] ## filter using our iswood? boolean array
+        return(random.choice(Subs).pos) ## pick from these, return position
+###########
+    def step(self): self.schedule.step() 
 
 ########
 #    def make_fungi(self):
@@ -68,68 +81,27 @@ class Forest (Model):
 #        else: 
 #            pass
 #
-    def step(self): self.schedule.step() 
 
 
-
-
-###############################
-## works
-#    def make_fungi(self):
-#        for i in range(self.nfungi): 
-#            x = random.randrange(self.grid.width)
-#            y = random.randrange(self.grid.height)
-#            pos = (x, y)
-#            fungus = Fungus(i, self, pos)
-#            self.schedule.add(fungus) 
-#            self.grid.place_agent(fungus, (x,y))
-#############################
 
 if __name__ == '__main__': 
     losced = Forest(5)
     losced.step()
 
 
-## so when placing plants, make sure there are no other plants
-## when placing wood, if there is already wood, just add to cellulose
-## when placing fungi, make sure there is a tree or wood...
-## if there is already fungi there? not sure, deal with this
-## tomorrow. 
-
-
 ## add some agents manually
-a1 = Fungus(123,Agent, (5,5))
-losced.grid.place_agent(a1, a1.pos)
-losced.schedule.add(a1) 
-a2 = Fungus(124,Agent, (5,5))
-losced.grid.place_agent(a2, a2.pos)
-losced.schedule.add(a2) 
-a3 = Tree(124,Agent, (5,5))
-losced.grid.place_agent(a3, a3.pos)
-losced.schedule.add(a3) 
-pos = (5,5)
-losced.grid.get_cell_list_contents(pos)
-
-sum([ type(i)==Fungus for i in losced.schedule.agents ]) < losced.nfungi
-
-sum([ type(i)==Fungus for i in self.schedule.agents ])
-
-dir()
-
-losced.schedule.agents
-
-sum([ type(i)==Wood for i in losced.schedule.agents ])
-
-sum([ type(i)==Wood for i in losced.schedule.agents ]) < 7
-
-aa = []
-while sum(aa) < 20:
-    print(aa)
-    aa.append(1)
-else:
-    print("done")
-
-
+if __name__=='__main__':
+    a1 = Fungus(123,Agent, (5,5))
+    losced.grid.place_agent(a1, a1.pos)
+    losced.schedule.add(a1) 
+    a2 = Fungus(124,Agent, (5,5))
+    losced.grid.place_agent(a2, a2.pos)
+    losced.schedule.add(a2) 
+    a3 = Tree(124,Agent, (5,5))
+    losced.grid.place_agent(a3, a3.pos)
+    losced.schedule.add(a3) 
+    pos = (5,5)
+    losced.grid.get_cell_list_contents(pos)
 
 
 
