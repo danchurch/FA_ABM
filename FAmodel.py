@@ -42,21 +42,17 @@ class Forest (Model):
                 self.schedule.add(wood) 
 ############
     def make_fungi(self):
-#        for i in range(self.nfungi): 
-#        while sum([ type(i)==Fungus for i in losced.schedule.agents ]) < self.nfungi:
-        for i in range(100):
-#            x = random.randrange(self.grid.width)
-#            y = random.randrange(self.grid.height)
-#            pos = (x, y)
+        fname = len(self.schedule.agents) + 1
+        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
             pos = self.findsubstrate(Wood)
             print("fungus",pos)
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  ## change this to add to cellulose of existing wood
-            #elif any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
             else:
-                fungus = Fungus(i, self, pos)
+                fungus = Fungus(fname, self, pos)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
+                fname += 1
     def findsubstrate (self, substrate):
         sub = [ type(i)==substrate for i in self.schedule.agents ]  ## is wood?
         subnp = np.array(sub, dtype=bool) ## np array, boolean
@@ -65,23 +61,6 @@ class Forest (Model):
         return(random.choice(Subs).pos) ## pick from these, return position
 ###########
     def step(self): self.schedule.step() 
-
-########
-#    def make_fungi(self):
-#        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
-#            x = random.randrange(self.grid.width)
-#            y = random.randrange(self.grid.height)
-#            pos = (x, y)
-#            if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
-#                pass  ## change this to add to cellulose of existing wood
-#            else:
-#                fungus = Fungus(i, self, pos)
-#                self.schedule.add(fungus) 
-#                self.grid.place_agent(fungus, (x,y))
-#        else: 
-#            pass
-#
-
 
 
 if __name__ == '__main__': 
@@ -102,7 +81,5 @@ if __name__=='__main__':
     losced.schedule.add(a3) 
     pos = (5,5)
     losced.grid.get_cell_list_contents(pos)
-
-
 
 
