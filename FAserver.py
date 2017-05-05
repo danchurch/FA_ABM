@@ -8,30 +8,24 @@ def agent_portrayal(agent):
         return
     if type(agent) is Tree:
         portrayal = {
-            "Shape":"circle", 
-            "Color": "#00AA00",
+            "Shape":"tree.png", 
             "Layer": 0,
-            "Filled": "true",
-            "r" : 1, 
+            "scale": 2,
             }
         return portrayal
     elif type(agent) is Fungus: 
         portrayal = {
-                "Shape":"circle", 
-                "Color": "Red",
+                "Shape":"mushroom.png", 
+                "Color": "Blue",
                 "Layer": 2,
-                "Filled": "true",
-                "r": .5,
+                "scale": 0.75
                 }
         return portrayal
     else:
         portrayal = {
-            "Shape":"rect", 
-            "Color": "#A52A2A",
+            "Shape":"log.png", 
             "Layer": 1,
-            "Filled": "true",
-            "w" : 1, 
-            "h" : 0.5,
+            "scale" : 1,
             }
         return portrayal
 

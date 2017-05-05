@@ -3,3 +3,4 @@ __pycache__
 *.pyc
 random
 lrun.py
+graphics/
