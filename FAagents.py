@@ -34,10 +34,11 @@ class Fungus (Agent):
         self.pos = pos 
     def sporulate(self): pass
     def eat(self):
+        from numpy import array
         self.energy += 1 ## fungi gets energy
         ## find the wood:
-        aa = np.array(self.model.grid.get_cell_list_contents(pos))
-        bb = np.array([ type(i)==Wood for i in aa ], dtype=bool)
+        aa = array(self.model.grid.get_cell_list_contents(self.pos))
+        bb = array([ type(i)==Wood for i in aa ], dtype=bool)
         mywood = aa[bb][0]
         mywood.cellulose -= 1 ## wood loses cellulose
     def step(self):
@@ -53,30 +54,4 @@ class Wood (Agent):
         self.pos = pos
     def step(self):
         print(self.unique_id, self.pos, type(self), "C:", self.cellulose) 
-
-
-
-
-if __name__ == '__main__':
-    from FAmodel import Forest
-    import random
-    losced = Forest(5)
-    losced.step()
-
-## fungus eating - whereever a fungi is on a log, fungus 
-## gets one unit of energy, log loses one unit of cellulose
-
-def eat(self):
-    self.energy += 1
-
-
-## how to find the cellulose of a given fungi's substrate?
-## we know there is wood there. How to access it by location?
-
-
-
-
-
-
-
 

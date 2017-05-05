@@ -66,8 +66,6 @@ if __name__ == '__main__':
     losced = Forest(5)
     losced.step()
 
-losced.step()
-
 
 ## add some agents manually
 if __name__=='__main__':
@@ -82,14 +80,5 @@ if __name__=='__main__':
     losced.schedule.add(a3) 
     pos = (5,5)
     losced.grid.get_cell_list_contents(pos)
-
-
-def eat(self):
-    self.energy += 1 ## fungi gets energy
-    ## find the wood:
-    aa = np.array(self.model.grid.get_cell_list_contents(pos))
-    bb = np.array([ type(i)==Wood for i in aa ], dtype=bool)
-    mywood = aa[bb][0]
-    mywood.cellulose -= 1 ## wood loses cellulose
 
 
