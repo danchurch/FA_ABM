@@ -35,7 +35,7 @@ class Forest (Model):
             y = random.randrange(self.grid.height)
             pos = (x, y)
             if any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
-                pass  ## change this to add to cellulose of existing wood
+                pass  ## change this to add to energy of existing wood
             else:
                 wood = Wood(i, self, pos)
                 self.grid.place_agent(wood, (x,y))
@@ -46,7 +46,7 @@ class Forest (Model):
         while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
             pos = self.findsubstrate(Wood)
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
-                pass  ## change this to add to cellulose of existing wood
+                pass  ## change this to add to energy of existing wood
             else:
                 fungus = Fungus(fname, self, pos)
                 self.schedule.add(fungus) 
