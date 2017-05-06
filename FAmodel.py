@@ -20,7 +20,6 @@ class Forest (Model):
         self.make_fungi()
 
 
-
     def make_trees(self):
         wname = 1
         while sum([ type(i)==Tree for i in self.schedule.agents ]) < self.ntrees:
@@ -64,7 +63,7 @@ class Forest (Model):
                 fname += 1
 
 
-    ## for finding wood to place fungi on, maybe useful elsewhere?
+    ## for finding wood to place fungi on, maybe useful for sporulation?
     def findsubstrate (self, substrate):
         sub = [ type(i)==substrate for i in self.schedule.agents ]  ## is wood?
         subnp = np.array(sub, dtype=bool) ## np array, boolean
