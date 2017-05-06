@@ -75,13 +75,15 @@ class Fungus (Agent):
         prob = exp(-self.D*dist)
         if random.random() < prob:
             fname = len(self.model.schedule.agents)+1
-            fungus = Fungus(fname, self, wood.pos)
+            fungus = Fungus(fname, self.model, wood.pos)
+            print("New fungus born:", fungus.unique_id)
             self.model.schedule.add(fungus)
             self.model.grid.place_agent(fungus, wood.pos)
             print("Another log inocculated!")
         else: pass
 
     def sporulate(self):
+        print("sporulation happening!")
         woods = self.getwoods()
         for i,ag in enumerate(woods):
             self.infectwood(ag)
