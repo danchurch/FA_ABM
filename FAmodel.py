@@ -22,7 +22,8 @@ class Forest (Model):
 
 
     def make_trees(self):
-        for i in range(self.ntrees): 
+        wname = 1
+        while sum([ type(i)==Tree for i in self.schedule.agents ]) < self.ntrees:
             x = random.randrange(self.grid.width)
             y = random.randrange(self.grid.height)
             pos = (x, y)
@@ -30,10 +31,10 @@ class Forest (Model):
             if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  ## but this will result in one fewer tree than normal!
             else: 
-                tree = Tree(i, self, pos)
+                tree = Tree(wname, self, pos)
                 self.schedule.add(tree) 
                 self.grid.place_agent(tree, (x,y))
-
+                wname += 1
 
 
 
