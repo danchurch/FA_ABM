@@ -10,23 +10,56 @@ class Tree (Agent):
     def __init__(self, unique_id, model, 
             pos, 
             infection = False,
-            leaffall = 1, 
-            leafdist = 1, 
-            woodfall = 1, 
-            wooddist = 1,
+            leaffall = 4, 
+            disp = 0.2, 
             ):
         super().__init__(unique_id, model)
         self.pos = pos
-        self.infection = infection
-        self.leaffall = leaffall
-        self.leafdist = leafdist
-        self.woodfall = woodfall
-        self.wooddist = wooddist
+        self.D = disp ## how far do leaves fall?
+        self.infection = infection ## has endophyte?
+        self.leaffall = leaffall ## how often do leaves drop? 1=every step, 2=every other, etc.
 
-    def dropleaves(self): pass 
-    def dropbranch(self): pass 
+    def distancefrom (self, otherpos):
+        from math import hypot
+        a = array(self.pos)
+        b = array(otherpos)
+        c = a-b
+        return(hypot(c[0],c[1]))
+
+    def getwoods(self): 
+        iswood = array([ type(i)==Wood for i in self.model.schedule.agents ])
+        ags = array(self.model.schedule.agents)
+        return list(ags[iswood])
+
+    def dropleaves(self):
+        if self.infection == True:
+            woods = self.getwoods()
+            for ag in woods:
+                self.infect(ag)
+        
+    def infect(self, host):
+        dist = self.distancefrom(host.pos)
+        prob = exp(-self.D*dist)
+        if type(host)==Wood:
+            if random.random() < prob:
+                fname = sum([ type(i)==Fungus for i in self.model.schedule.agents ]) + 1
+                fungus = Fungus(fname, self.model, host.pos, endocomp=True)
+                print("New fungus born:", fungus.unique_id)
+                self.model.schedule.add(fungus)
+                self.model.grid.place_agent(fungus, host.pos)
+                print("Log colonized from a leaf!")
+        elif type(host)==Tree:
+            if random.random() < prob:
+                host.infection = True
+                print("Tree infected!")
+        else: pass
+
+
     def step(self):
-        print(self.unique_id, self.pos, type(self)) 
+        if self.model.schedule.time % self.leaffall ==  0: 
+            self.dropleaves()
+            print("drop leaves!")
+#        print(self.unique_id, self.pos, type(self)) 
 
 ##### fungi ########
 class Fungus (Agent):
@@ -108,7 +141,7 @@ class Fungus (Agent):
             self.sporulate()
             self.energy -= 3
         self.eat()
-        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
+#        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
 
 
 ###### wood #########
@@ -121,9 +154,13 @@ class Wood (Agent):
         self.model.grid._remove_agent(self.pos, self)
         self.model.schedule.remove(self)
     def step(self):
-        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
+#        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
         if self.energy < 1: self.die()
 
-## need to remove fungi on log
-## not sure if removing an agent from the sched and grid 
-## removes it from memory space of model
+###### to do ######
+
+## wood deposition - random or function of trees?
+## reduction in likelihood of infection if already 
+    ## colonized by other fungi 
+## fix graphics - fungi on top of each other
+

@@ -29,7 +29,7 @@ class Forest (Model):
             pos = (x, y)
             ## check for tree already present:
             if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
-                pass  ## but this will result in one fewer tree than normal!
+                pass  
             else: 
                 tree = Tree(wname, self, pos)
                 self.schedule.add(tree) 
