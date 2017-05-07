@@ -8,9 +8,10 @@ from FAagents import Tree, Wood, Fungus
 
 ###### model #######
 class Forest (Model): 
-    def __init__ (self, ts=10, fs=2, ws = 5, width = 10, height = 10):
+    def __init__ (self, ts=10, ndecomp=1, nendo=1, ws = 5, width = 10, height = 10):
         self.ntrees = ts 
-        self.nfungi = fs 
+        self.ndecomp = ndecomp 
+        self.nendo = nendo 
         self.nwood = ws 
         self.schedule = RandomActivation(self) 
         self.grid = MultiGrid(width, height, torus = True)
@@ -51,13 +52,26 @@ class Forest (Model):
 
 
     def make_fungi(self):
-        fname = len(self.schedule.agents) + 1
-        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
+        fname = sum([ type(i)==Fungus for i in self.schedule.agents ]) + 1
+
+        ## decomposers first:
+        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.ndecomp:
             pos = self.findsubstrate(Wood)
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  ## change this to add to energy of existing wood
             else:
-                fungus = Fungus(fname, self, pos)
+                fungus = Fungus(fname, self, pos, endocomp=False)
+                self.schedule.add(fungus) 
+                self.grid.place_agent(fungus, pos)
+                fname += 1
+
+        ## then endophytes:
+        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.ndecomp + self.nendo:
+            pos = self.findsubstrate(Wood)
+            if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
+                pass  ## change this to add to energy of existing wood
+            else:
+                fungus = Fungus(fname, self, pos, endocomp=True)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
                 fname += 1
@@ -73,6 +87,17 @@ class Forest (Model):
 
     def step(self): self.schedule.step() 
 
-
-
-
+###works##############
+#
+#    def make_fungi(self):
+#        fname = len(self.schedule.agents) + 1
+#        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
+#            pos = self.findsubstrate(Wood)
+#            if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
+#                pass  ## change this to add to energy of existing wood
+#            else:
+#                fungus = Fungus(fname, self, pos)
+#                self.schedule.add(fungus) 
+#                self.grid.place_agent(fungus, pos)
+#                fname += 1
+#
