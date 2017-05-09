@@ -8,21 +8,23 @@ from FAagents import Tree, Wood, Fungus
 
 ###### model #######
 class Forest (Model): 
-    def __init__ (self, ts=10, ndecomp=1, nendo=1, ws = 5, width = 10, height = 10):
+    def __init__ (self, ts=10, ndecomp=1, nendo=1, ws = 5, woodfreq = 4, newwood = 4, width = 10, height = 10):
         self.ntrees = ts 
         self.ndecomp = ndecomp 
         self.nendo = nendo 
         self.nwood = ws 
+        self.newwood = newwood 
+        self.woodfreq = woodfreq
         self.schedule = RandomActivation(self) 
         self.grid = MultiGrid(width, height, torus = True)
         self.running = True
         self.make_trees()
-        self.make_wood()
+        for i in range(self.nwood): self.add_wood()
         self.make_fungi()
 
 
     def make_trees(self):
-        wname = 1
+        tname = 1
         while sum([ type(i)==Tree for i in self.schedule.agents ]) < self.ntrees:
             x = random.randrange(self.grid.width)
             y = random.randrange(self.grid.height)
@@ -31,25 +33,30 @@ class Forest (Model):
             if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  
             else: 
-                tree = Tree(wname, self, pos)
+                tree = Tree(tname, self, pos)
                 self.schedule.add(tree) 
                 self.grid.place_agent(tree, (x,y))
-                wname += 1
+                tname += 1
 
 
 
-    def make_wood(self):
-        for i in range(self.nwood): 
-            x = random.randrange(self.grid.width)
-            y = random.randrange(self.grid.height)
-            pos = (x, y)
-            if any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
-                pass  ## change this to add to energy of existing wood
-            else:
-                wood = Wood(i, self, pos)
-                self.grid.place_agent(wood, (x,y))
-                self.schedule.add(wood) 
-
+    def add_wood(self):
+        wname = sum([ type(i)==Wood for i in self.schedule.agents ]) + 1
+        x = random.randrange(self.grid.width)
+        y = random.randrange(self.grid.height)
+        pos = (x, y)
+        ## wood already present? then just add to the pile
+        if any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
+            for i in self.grid.get_cell_list_contents(pos):
+                if type(i)==Wood: 
+                    i.energy += 3
+                    print("Adding to the pile!")
+        else:
+            wood = Wood(wname, self, pos)
+            self.grid.place_agent(wood, (x,y))
+            self.schedule.add(wood)
+            print("new log!")
+            wname += 1 
 
     def make_fungi(self):
         fname = sum([ type(i)==Fungus for i in self.schedule.agents ]) + 1
@@ -85,19 +92,10 @@ class Forest (Model):
         Subs = Agnp[subnp] ## filter using our iswood? boolean array
         return(random.choice(Subs).pos) ## pick from these, return position
 
-    def step(self): self.schedule.step() 
+    def step(self): 
+        if self.schedule.time % self.woodfreq ==  3:
+            for i in range(random.randrange(self.newwood)): self.add_wood()
+        self.schedule.step() 
 
-###works##############
-#
-#    def make_fungi(self):
-#        fname = len(self.schedule.agents) + 1
-#        while sum([ type(i)==Fungus for i in self.schedule.agents ]) < self.nfungi:
-#            pos = self.findsubstrate(Wood)
-#            if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
-#                pass  ## change this to add to energy of existing wood
-#            else:
-#                fungus = Fungus(fname, self, pos)
-#                self.schedule.add(fungus) 
-#                self.grid.place_agent(fungus, pos)
-#                fname += 1
-#
+
+
