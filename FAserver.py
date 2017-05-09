@@ -24,7 +24,7 @@ def agent_portrayal(agent):
     elif type(agent) is Fungus: 
         if agent.endocomp == False: 
                 portrayal = {
-                        "Shape":"redmush.png", 
+                        "Shape":"redmush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
                         "scale": 0.75
@@ -32,7 +32,7 @@ def agent_portrayal(agent):
                 return portrayal
         else:
                 portrayal = {
-                        "Shape":"bluemush.png", 
+                        "Shape":"bluemush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
                         "scale": 0.75
