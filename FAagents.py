@@ -66,7 +66,7 @@ class Fungus (Agent):
     def __init__(self, 
                 unique_id, 
                 model, pos, 
-                energy = 3, 
+                energy = 10, 
                 disp = 0.5, 
                 endocomp = False):
         super().__init__(unique_id, model)
@@ -111,9 +111,11 @@ class Fungus (Agent):
 
     def infect(self, host):
         dist = self.distancefrom(host.pos)
-        prob = exp(-self.D*dist)
+        prob = exp(-self.D*dist) 
         if type(host)==Wood:
-            if random.random() < prob:
+            ## for wood, reduce the probability by the amount of energy 
+            ## already consumed (~ competition, smaller target)
+            if random.random() < prob*(host.energy/host.startenergy):
                 fname = sum([ type(i)==Fungus for i in self.model.schedule.agents ]) + 1
                 fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp)
                 print("New fungus born:", fungus.unique_id)
@@ -149,6 +151,7 @@ class Wood (Agent):
     def __init__(self, unique_id, model, pos, energy = 10): 
         super().__init__(unique_id, model)
         self.energy = energy
+        self.startenergy = energy
         self.pos = pos
     def die(self):
         self.model.grid._remove_agent(self.pos, self)

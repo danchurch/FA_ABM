@@ -8,7 +8,11 @@ from FAagents import Tree, Wood, Fungus
 
 ###### model #######
 class Forest (Model): 
-    def __init__ (self, ts=10, ndecomp=1, nendo=1, ws = 5, woodfreq = 4, newwood = 4, width = 10, height = 10):
+    def __init__ (self, ts=10, ndecomp=1, 
+                nendo=1, ws = 5, 
+                woodfreq = 4, 
+                newwood = 4, width = 10, 
+                height = 10):
         self.ntrees = ts 
         self.ndecomp = ndecomp 
         self.nendo = nendo 

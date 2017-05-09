@@ -27,7 +27,7 @@ def agent_portrayal(agent):
                         "Shape":"redmush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
-                        "scale": 0.75
+                        "scale": 1
                         }
                 return portrayal
         else:
@@ -35,7 +35,7 @@ def agent_portrayal(agent):
                         "Shape":"bluemush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
-                        "scale": 0.75
+                        "scale": 1
                         }
                 return portrayal
     else:
