@@ -11,13 +11,13 @@ def agent_portrayal(agent):
             portrayal = {
                 "Shape":"tree.png", 
                 "Layer": 0,
-                "scale": 2,
+                "scale": 10,
                 }
         if agent.infection == True: 
             portrayal = {
                 "Shape":"tree_infected.png", 
                 "Layer": 0,
-                "scale": 2,
+                "scale": 10,
                 }
         return portrayal
 
@@ -27,7 +27,7 @@ def agent_portrayal(agent):
                         "Shape":"redmush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
-                        "scale": 1
+                        "scale": 7
                         }
                 return portrayal
         else:
@@ -35,19 +35,19 @@ def agent_portrayal(agent):
                         "Shape":"bluemush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
-                        "scale": 1
+                        "scale": 7
                         }
                 return portrayal
     else:
         portrayal = {
             "Shape":"log.png", 
             "Layer": 1,
-            "scale" : 1,
+            "scale" : 7,
             }
         return portrayal
 
-canvas_element = CanvasGrid(agent_portrayal, 10,10,200,200)
+canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
-server = ModularServer(Forest, [canvas_element], "TreesFungiWood", ts=3)
+server = ModularServer(Forest, [canvas_element], "TreesFungiWood", ts=30)
 
 

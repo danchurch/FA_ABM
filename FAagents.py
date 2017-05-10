@@ -5,6 +5,7 @@ from numpy import array
 from math import exp
 from mesa import Agent
 
+
 ##### trees ######
 class Tree (Agent):
     def __init__(self, unique_id, model, 
@@ -16,43 +17,35 @@ class Tree (Agent):
         super().__init__(unique_id, model)
         self.pos = pos
         self.D = disp ## how far do leaves fall?
-        self.infection = infection ## has endophyte?
+        self.infection = infection ## has an endophyte infection?
         self.leaffall = leaffall ## how often do leaves drop? 1=every step, 2=every other, etc.
 
-    def distancefrom (self, otherpos):
-        from math import hypot
+    def distancefrom(self, other):
+        from numpy import array
         a = array(self.pos)
-        b = array(otherpos)
+        b = array(other.pos)
         c = a-b
-        return(hypot(c[0],c[1]))
-
-    def getwoods(self): 
-        iswood = array([ type(i)==Wood for i in self.model.schedule.agents ])
-        ags = array(self.model.schedule.agents)
-        return list(ags[iswood])
+        d = (c[0]**2+c[1]**2)**(1/2)
+        return(d)
 
     def dropleaves(self):
         if self.infection == True:
-            woods = self.getwoods()
+            woods = self.model.getall(Wood)
             for ag in woods:
-                self.infect(ag)
-        
-    def infect(self, host):
-        dist = self.distancefrom(host.pos)
+                self.leaf_infect(ag)
+
+    def leaf_infect(self, host):
+        dist = self.distancefrom(host)
         prob = exp(-self.D*dist)
+        fname = len(self.model.getall(Fungus)) + 1
+        ## tree (leaf) infection of wood
         if type(host)==Wood:
             if random.random() < prob:
-                fname = sum([ type(i)==Fungus for i in self.model.schedule.agents ]) + 1
                 fungus = Fungus(fname, self.model, host.pos, endocomp=True)
-                print("New fungus born:", fungus.unique_id)
                 self.model.schedule.add(fungus)
                 self.model.grid.place_agent(fungus, host.pos)
-                print("Log colonized from a leaf!")
-        elif type(host)==Tree:
-            if random.random() < prob:
-                host.infection = True
-                print("Tree infected!")
-        else: pass
+                fname += 1
+            else: pass
 
 
     def step(self):
@@ -62,6 +55,7 @@ class Tree (Agent):
 #        print(self.unique_id, self.pos, type(self)) 
 
 ##### fungi ########
+
 class Fungus (Agent):
     def __init__(self, 
                 unique_id, 
@@ -74,6 +68,14 @@ class Fungus (Agent):
         self.endocomp = endocomp 
         self.D = disp
         self.pos = pos 
+
+    def distancefrom(self, other):
+        from numpy import array
+        a = array(self.pos)
+        b = array(other.pos)
+        c = a-b
+        d = (c[0]**2+c[1]**2)**(1/2)
+        return(d)
 
     def die(self):
         self.model.grid._remove_agent(self.pos, self)
@@ -91,52 +93,37 @@ class Fungus (Agent):
             print("Dead!")
             self.die()
 
-    ## list of wood on the landscape
-    def getwoods(self): 
-        iswood = array([ type(i)==Wood for i in self.model.schedule.agents ])
-        ags = array(self.model.schedule.agents)
-        return list(ags[iswood])
-
-    def gettrees(self):
-        istree = array([ type(i)==Tree for i in self.model.schedule.agents ])
-        ags = array(self.model.schedule.agents)
-        return list(ags[istree])
-
-    def distancefrom (self, otherpos):
-        from math import hypot
-        a = array(self.pos)
-        b = array(otherpos)
-        c = a-b
-        return(hypot(c[0],c[1]))
-
-    def infect(self, host):
-        dist = self.distancefrom(host.pos)
-        prob = exp(-self.D*dist) 
-        if type(host)==Wood:
-            ## for wood, reduce the probability by the amount of energy 
-            ## already consumed (~ competition, smaller target)
-            if random.random() < prob*(host.energy/host.startenergy):
-                fname = sum([ type(i)==Fungus for i in self.model.schedule.agents ]) + 1
-                fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp)
-                print("New fungus born:", fungus.unique_id)
-                self.model.schedule.add(fungus)
-                self.model.grid.place_agent(fungus, host.pos)
-                print("Log inocculated!")
-        elif type(host)==Tree:
-            if random.random() < prob:
-                host.infection = True
-                print("Tree infected!")
-        else: pass
 
     def sporulate(self):
         print("sporulation happening!")
-        woods = self.getwoods()
+        woods = self.model.getall(Wood)
         for i,ag in enumerate(woods):
-            self.infect(ag)
+            self.spore_infect(ag)
         if self.endocomp==True:
-            trees = self.gettrees()
+            trees = self.model.getall(Tree)
             for i,ag in enumerate(trees):
-                self.infect(ag)
+                self.spore_infect(ag)
+
+    def spore_infect(self, host):
+        dist = self.distancefrom(host)
+        prob = exp(-self.D*dist)
+        fname = len(self.model.getall(Fungus)) + 1
+        ## fungus infecting wood
+        if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
+            if random.random() < prob*(host.energy/host.startenergy): ## reduce likelihood if already infected
+                fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp)
+                self.model.schedule.add(fungus)
+                self.model.grid.place_agent(fungus, host.pos)
+                fname += 1
+            else: pass
+        ## fungus infecting tree
+        elif type(host)==Tree:
+            if random.random() < prob:
+                host.infection = True
+                fname += 1
+            else: pass
+        else:
+            print("spore infection unsuccessful")
 
     def step(self):
         if self.energy > 3:
@@ -147,6 +134,7 @@ class Fungus (Agent):
 
 
 ###### wood #########
+
 class Wood (Agent):
     def __init__(self, unique_id, model, pos, energy = 10): 
         super().__init__(unique_id, model)
@@ -160,10 +148,12 @@ class Wood (Agent):
 #        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
         if self.energy < 1: self.die()
 
+##### agent library ##########
+
+
+
 ###### to do ######
 
-## wood deposition - random or function of trees?
 ## reduction in likelihood of infection if already 
     ## colonized by other fungi 
-## fix graphics - fungi on top of each other
 
