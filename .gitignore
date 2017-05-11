@@ -4,3 +4,4 @@ __pycache__
 random
 lrun.py
 graphics/
+.ipynb_checkpoints/
