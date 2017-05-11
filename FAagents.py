@@ -10,9 +10,9 @@ from mesa import Agent
 class Tree (Agent):
     def __init__(self, unique_id, model, 
             pos, 
-            infection = False,
-            leaffall = 4, 
-            disp = 0.2, 
+            infection,
+            leaffall, 
+            disp, 
             ):
         super().__init__(unique_id, model)
         self.pos = pos
@@ -37,7 +37,6 @@ class Tree (Agent):
     def leaf_infect(self, host):
         dist = self.distancefrom(host)
         prob = exp(-self.D*dist)
-        print("prob=", prob)
         fname = len(self.model.getall(Fungus)) + 1
         ## tree (leaf) infection of wood
         if type(host)==Wood:
@@ -52,8 +51,6 @@ class Tree (Agent):
     def step(self):
         if self.model.schedule.time % self.leaffall ==  0: 
             self.dropleaves()
-            print("drop leaves!")
-#        print(self.unique_id, self.pos, type(self)) 
 
 ##### fungi ########
 
@@ -93,12 +90,10 @@ class Fungus (Agent):
             mywood = aa[bb][0]
             mywood.energy -= 1 ## wood loses energy
         else: 
-            print("Dead!")
             self.die()
 
 
     def sporulate(self):
-        print("sporulation happening!")
         woods = self.model.getall(Wood)
         for i,ag in enumerate(woods):
             self.spore_infect(ag)
@@ -111,7 +106,6 @@ class Fungus (Agent):
     def spore_infect(self, host):
         dist = self.distancefrom(host)
         prob = exp(-self.D*dist)
-        print("prob=", prob)
         fname = len(self.model.getall(Fungus)) + 1
         ## fungus infecting wood
         if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
@@ -128,7 +122,7 @@ class Fungus (Agent):
                 fname += 1
             else: pass
         else:
-            print("spore infection unsuccessful")
+            pass
 
     def step(self):
         if self.energy > 3:
@@ -149,7 +143,6 @@ class Wood (Agent):
         self.model.grid._remove_agent(self.pos, self)
         self.model.schedule.remove(self)
     def step(self):
-#        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
         if self.energy < 1: self.die()
 
 

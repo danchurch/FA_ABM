@@ -10,8 +10,10 @@ from FAagents import Tree, Wood, Fungus
 class Forest (Model): 
     def __init__ (self,  
                 ts=30, ws = 20, ## initial num of trees, wood
-                endodisp=.01, ## dispersal of endos
-                decompdisp=0.01, ## dispersal of decomps
+                endodisp=1, ## dispersal of endos
+                decompdisp=0.1, ## dispersal of decomps
+                leafdisp = 1,
+                leaffall = 4,
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 newwood = 4, ## amount of logs to put on landscape at a time
@@ -22,6 +24,8 @@ class Forest (Model):
         self.nwood = ws 
         self.endodisp = endodisp 
         self.decompdisp = decompdisp 
+        self.leafdisp = leafdisp
+        self.leaffall = leaffall 
         self.numdecomp = numdecomp 
         self.numendo = numendo 
         self.newwood = newwood 
@@ -46,7 +50,11 @@ class Forest (Model):
             if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
                 pass  
             else: 
-                tree = Tree(tname, self, pos)
+                tree = Tree(tname, self, pos, 
+                            disp = self.leafdisp, 
+                            leaffall = self.leaffall,
+                            infection = False)
+
                 self.schedule.add(tree) 
                 self.grid.place_agent(tree, (x,y))
                 tname += 1
@@ -79,7 +87,7 @@ class Forest (Model):
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass 
             else:
-                fungus = Fungus(fname, self, pos, endocomp=False, disp = self.endodisp)
+                fungus = Fungus(fname, self, pos, endocomp=False, disp = self.decompdisp)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
                 fname += 1; decomps += 1
@@ -92,7 +100,7 @@ class Forest (Model):
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass
             else:
-                fungus = Fungus(fname, self, pos, endocomp=True, disp = self.decompdisp)
+                fungus = Fungus(fname, self, pos, endocomp=True, disp = self.endodisp)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
                 fname += 1; endos += 1
