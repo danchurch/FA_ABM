@@ -37,11 +37,12 @@ class Tree (Agent):
     def leaf_infect(self, host):
         dist = self.distancefrom(host)
         prob = exp(-self.D*dist)
+        print("prob=", prob)
         fname = len(self.model.getall(Fungus)) + 1
         ## tree (leaf) infection of wood
         if type(host)==Wood:
             if random.random() < prob:
-                fungus = Fungus(fname, self.model, host.pos, endocomp=True)
+                fungus = Fungus(fname, self.model, host.pos, endocomp=True, disp=self.model.endodisp)
                 self.model.schedule.add(fungus)
                 self.model.grid.place_agent(fungus, host.pos)
                 fname += 1
@@ -59,15 +60,17 @@ class Tree (Agent):
 class Fungus (Agent):
     def __init__(self, 
                 unique_id, 
-                model, pos, 
+                model, 
+                pos, 
+                endocomp,
+                disp,
                 energy = 10, 
-                disp = 0.5, 
-                endocomp = False):
+                ):
         super().__init__(unique_id, model)
-        self.energy = energy 
-        self.endocomp = endocomp 
-        self.D = disp
         self.pos = pos 
+        self.endocomp = endocomp
+        self.D = disp
+        self.energy = energy 
 
     def distancefrom(self, other):
         from numpy import array
@@ -102,16 +105,18 @@ class Fungus (Agent):
         if self.endocomp==True:
             trees = self.model.getall(Tree)
             for i,ag in enumerate(trees):
+                if ag.pos == self.pos: print("self-grid")
                 self.spore_infect(ag)
 
     def spore_infect(self, host):
         dist = self.distancefrom(host)
         prob = exp(-self.D*dist)
+        print("prob=", prob)
         fname = len(self.model.getall(Fungus)) + 1
         ## fungus infecting wood
         if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
             if random.random() < prob*(host.energy/host.startenergy): ## reduce likelihood if already infected
-                fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp)
+                fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp, disp = self.model.decompdisp)
                 self.model.schedule.add(fungus)
                 self.model.grid.place_agent(fungus, host.pos)
                 fname += 1
@@ -130,7 +135,6 @@ class Fungus (Agent):
             self.sporulate()
             self.energy -= 3
         self.eat()
-#        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
 
 
 ###### wood #########
@@ -148,12 +152,4 @@ class Wood (Agent):
 #        print(self.unique_id, self.pos, type(self), "E:", self.energy) 
         if self.energy < 1: self.die()
 
-##### agent library ##########
-
-
-
-###### to do ######
-
-## reduction in likelihood of infection if already 
-    ## colonized by other fungi 
 
