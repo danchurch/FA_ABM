@@ -11,13 +11,13 @@ def agent_portrayal(agent):
             portrayal = {
                 "Shape":"tree.png", 
                 "Layer": 0,
-                "scale": 10,
+                "scale": 8,
                 }
         if agent.infection == True: 
             portrayal = {
                 "Shape":"tree_infected.png", 
                 "Layer": 0,
-                "scale": 10,
+                "scale": 8,
                 }
         return portrayal
 
@@ -48,6 +48,6 @@ def agent_portrayal(agent):
 
 canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
-server = ModularServer(Forest, [canvas_element], "TreesFungiWood",)
+server = ModularServer(Forest, [canvas_element], "TreesFungiWood", kappa = 0.001, sigma = 1, mu = 10)
 
 

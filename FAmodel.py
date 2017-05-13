@@ -20,7 +20,10 @@ class Forest (Model):
                 newwood = 4, ## amount of logs to put on landscape at a time
                 woodfreq = 4, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
-                clustering = False ): ## grid dimensions
+                kappa = 0.01, ## average rate of parent tree clusters per unit distance 
+                sigma = 0.5, ## variance of child tree clusters, +/- spread of child clusters
+                mu = 3.0, ## average rate of child tree clusters per unit distance 
+                ): ## grid dimensions
 
         self.ntrees = ts 
         self.nwood = ws 
@@ -34,8 +37,11 @@ class Forest (Model):
         self.woodfreq = woodfreq
         self.schedule = RandomActivation(self) 
         self.grid = MultiGrid(width, width, torus = True)
-        self.clustering = clustering
         self.running = True
+        self.width = width 
+        self.kappa = kappa
+        self.sigma = sigma
+        self.mu = mu
 
         ## make initial agents:
         self.make_trees()
@@ -46,7 +52,10 @@ class Forest (Model):
         ## let's use our thomas process module
         tname = 1
 
-        positions = tp.makepos(tp.ThomasPP(Dx=self.grid.width-1))
+        positions = tp.makepos(tp.ThomasPP(kappa = self.kappa, 
+                                sigma=self.sigma, 
+                                mu=self.mu, 
+                                Dx=self.grid.width-1))
         for i in positions:
                 try:
                     tree = Tree(tname, self, i, 
@@ -75,7 +84,6 @@ class Forest (Model):
             wood = Wood(wname, self, pos)
             self.grid.place_agent(wood, (x,y))
             self.schedule.add(wood)
-            print("new log!")
             wname += 1 
 
     def make_fungi(self):
@@ -126,20 +134,3 @@ class Forest (Model):
 
 
 
-#        if not self.clustering:
-#            while len(self.getall(Tree)) < self.ntrees:
-#                x = random.randrange(self.grid.width)
-#                y = random.randrange(self.grid.height)
-#                pos = (x, y)
-#                ## check for tree already present:
-#                if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
-#                    pass  
-#                else: 
-#                    tree = Tree(tname, self, pos, 
-#                                disp = self.leafdisp, 
-#                                leaffall = self.leaffall,
-#                                infection = False)
-#
-#                    self.schedule.add(tree) 
-#                    self.grid.place_agent(tree, (x,y))
-#                    tname += 1
