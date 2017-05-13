@@ -46,16 +46,22 @@ def ThomasPP(kappa=.01, sigma=0.5, mu=3.0, Dx=100): ## some useful defaults
     pts = [x,y]
     return pts 
 
-def makepos(rawpts):
+def makepos(rawpts, Dx=100):
     '''
     a function for getting the thomas points into 
     a useful format for mesa.
     '''
     ## round these floating decimal coords
-    bb = [ int(round(i)) for i in rawpts[0] ]
-    cc = [ int(round(i)) for i in rawpts[1] ]
+    aa = [ int(round(i)) for i in rawpts[0] ]
+    ## if too big, subtract:
+    aatrim = [ i if i < Dx  else i-99 for i in aa ]
+    bb = [ int(round(i)) for i in rawpts[1] ]
+    ## if too big, subtract:
+    bbtrim = [ i if i < Dx  else i-99 for i in bb ]
     ## make a set of unique tuples, for tree positions
-    dd = list(set(list(zip(bb,cc))))
-    return(dd)
+    cc = list(set(list(zip(aatrim,bbtrim))))
+    return(cc)
+
+
 
 

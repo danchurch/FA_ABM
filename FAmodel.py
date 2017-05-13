@@ -19,7 +19,7 @@ class Forest (Model):
                 numendo=1,   ## initial number of endos
                 newwood = 4, ## amount of logs to put on landscape at a time
                 woodfreq = 4, ## how often to put new logs onto the landscape 
-                width = 100, height = 100, ## grid dimensions
+                width = 100, ## grid dimensions, only one (squares only)
                 clustering = False ): ## grid dimensions
 
         self.ntrees = ts 
@@ -33,7 +33,7 @@ class Forest (Model):
         self.newwood = newwood 
         self.woodfreq = woodfreq
         self.schedule = RandomActivation(self) 
-        self.grid = MultiGrid(width, height, torus = True)
+        self.grid = MultiGrid(width, width, torus = True)
         self.clustering = clustering
         self.running = True
 
@@ -43,27 +43,12 @@ class Forest (Model):
         self.make_fungi()
 
     def make_trees(self):
+        ## let's use our thomas process module
         tname = 1
-        if self.clustering:
-            while len(self.getall(Tree)) < self.ntrees:
-                x = random.randrange(self.grid.width)
-                y = random.randrange(self.grid.height)
-                pos = (x, y)
-                ## check for tree already present:
-                if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
-                    pass  
-                else: 
-                    tree = Tree(tname, self, pos, 
-                                disp = self.leafdisp, 
-                                leaffall = self.leaffall,
-                                infection = False)
 
-                    self.schedule.add(tree) 
-                    self.grid.place_agent(tree, (x,y))
-                    tname += 1
-        else:  ## if we want clustering, use thomas process
-            positions = tp.ThomasPP()
-            for i in positions:
+        positions = tp.makepos(tp.ThomasPP(Dx=self.grid.width-1))
+        for i in positions:
+                try:
                     tree = Tree(tname, self, i, 
                                 disp = self.leafdisp, 
                                 leaffall = self.leaffall,
@@ -71,6 +56,9 @@ class Forest (Model):
                     self.schedule.add(tree) 
                     self.grid.place_agent(tree, i)
                     tname += 1
+                except IndexError:
+                    print ("Tree out-of-bounds, ipos=",i,"grid dim=", self.grid.width, self.grid.height)
+
 
     def add_wood(self):
         wname = len(self.getall(Wood)) + 1 
@@ -138,3 +126,20 @@ class Forest (Model):
 
 
 
+#        if not self.clustering:
+#            while len(self.getall(Tree)) < self.ntrees:
+#                x = random.randrange(self.grid.width)
+#                y = random.randrange(self.grid.height)
+#                pos = (x, y)
+#                ## check for tree already present:
+#                if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
+#                    pass  
+#                else: 
+#                    tree = Tree(tname, self, pos, 
+#                                disp = self.leafdisp, 
+#                                leaffall = self.leaffall,
+#                                infection = False)
+#
+#                    self.schedule.add(tree) 
+#                    self.grid.place_agent(tree, (x,y))
+#                    tname += 1
