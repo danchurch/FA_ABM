@@ -18,7 +18,7 @@ def PoissonPP( rt, Dx, Dy=None ):
     return(P)
 
 
-def ThomasPP( kappa, sigma, mu, Dx ):
+def ThomasPP(kappa=.01, sigma=0.5, mu=3.0, Dx=100): ## some useful defaults
     '''
     each forming a Poisson( mu ) numbered cluster of points,
     having an isotropic Gaussian distribution with variance `sigma`
@@ -47,10 +47,15 @@ def ThomasPP( kappa, sigma, mu, Dx ):
     return pts 
 
 def makepos(rawpts):
+    '''
+    a function for getting the thomas points into 
+    a useful format for mesa.
+    '''
     ## round these floating decimal coords
-    bb = [ round(i) for i in rawpts[0] ]
-    cc = [ round(i) for i in rawpts[1] ]
+    bb = [ int(round(i)) for i in rawpts[0] ]
+    cc = [ int(round(i)) for i in rawpts[1] ]
     ## make a set of unique tuples, for tree positions
-    dd = set(list(zip(bb,cc)))
+    dd = list(set(list(zip(bb,cc))))
+    return(dd)
 
 

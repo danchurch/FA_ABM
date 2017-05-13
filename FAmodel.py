@@ -2,6 +2,7 @@ from mesa import Agent, Model
 from mesa.time import RandomActivation
 import random
 import numpy as np
+import thomasprocess as tp
 from mesa.space import MultiGrid
 from mesa.time import RandomActivation
 from FAagents import Tree, Wood, Fungus
@@ -18,7 +19,8 @@ class Forest (Model):
                 numendo=1,   ## initial number of endos
                 newwood = 4, ## amount of logs to put on landscape at a time
                 woodfreq = 4, ## how often to put new logs onto the landscape 
-                width = 100, height = 100): ## grid dimensions
+                width = 100, height = 100, ## grid dimensions
+                clustering = False ): ## grid dimensions
 
         self.ntrees = ts 
         self.nwood = ws 
@@ -32,6 +34,7 @@ class Forest (Model):
         self.woodfreq = woodfreq
         self.schedule = RandomActivation(self) 
         self.grid = MultiGrid(width, height, torus = True)
+        self.clustering = clustering
         self.running = True
 
         ## make initial agents:
@@ -39,25 +42,35 @@ class Forest (Model):
         for i in range(self.nwood): self.add_wood() ## no make_woods method
         self.make_fungi()
 
-
     def make_trees(self):
         tname = 1
-        while len(self.getall(Tree)) < self.ntrees:
-            x = random.randrange(self.grid.width)
-            y = random.randrange(self.grid.height)
-            pos = (x, y)
-            ## check for tree already present:
-            if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
-                pass  
-            else: 
-                tree = Tree(tname, self, pos, 
-                            disp = self.leafdisp, 
-                            leaffall = self.leaffall,
-                            infection = False)
+        if self.clustering:
+            while len(self.getall(Tree)) < self.ntrees:
+                x = random.randrange(self.grid.width)
+                y = random.randrange(self.grid.height)
+                pos = (x, y)
+                ## check for tree already present:
+                if any([ type(i)==Tree for i in self.grid.get_cell_list_contents(pos) ]):
+                    pass  
+                else: 
+                    tree = Tree(tname, self, pos, 
+                                disp = self.leafdisp, 
+                                leaffall = self.leaffall,
+                                infection = False)
 
-                self.schedule.add(tree) 
-                self.grid.place_agent(tree, (x,y))
-                tname += 1
+                    self.schedule.add(tree) 
+                    self.grid.place_agent(tree, (x,y))
+                    tname += 1
+        else:  ## if we want clustering, use thomas process
+            positions = tp.ThomasPP()
+            for i in positions:
+                    tree = Tree(tname, self, i, 
+                                disp = self.leafdisp, 
+                                leaffall = self.leaffall,
+                                infection = False)
+                    self.schedule.add(tree) 
+                    self.grid.place_agent(tree, i)
+                    tname += 1
 
     def add_wood(self):
         wname = len(self.getall(Wood)) + 1 
@@ -93,7 +106,6 @@ class Forest (Model):
                 fname += 1; decomps += 1
 
         ## then endophytes:
-        #while sum([ i.endocomp==True for i in self.getall(Fungus) ]) < self.numendo:
         endos=0
         while endos < self.numendo:
             pos = self.findsubstrate(Wood)
@@ -105,14 +117,6 @@ class Forest (Model):
                 self.grid.place_agent(fungus, pos)
                 fname += 1; endos += 1
 
-
-    ## for finding wood to place fungi on, maybe useful for sporulation?
-#    def findsubstrate (self, substrate):
-#        sub = [ type(i)==substrate for i in self.schedule.agents ]  ## is wood?
-#        subnp = np.array(sub, dtype=bool) ## np array, boolean
-#        Agnp = np.array(self.schedule.agents) ## np array of agents
-#        Subs = Agnp[subnp] ## filter using our iswood? boolean array
-#        return(random.choice(Subs).pos) ## pick from these, return position
 
     def findsubstrate (self, substrate):
         Subs = self.getall(substrate)
