@@ -35,17 +35,19 @@ class Tree (Agent):
                 self.leaf_infect(ag)
 
     def leaf_infect(self, host):
-        dist = self.distancefrom(host)
-        prob = exp(-self.D*dist)
-        fname = len(self.model.getall(Fungus)) + 1
-        ## tree (leaf) infection of wood
-        if type(host)==Wood:
-            if random.random() < prob:
-                fungus = Fungus(fname, self.model, host.pos, endocomp=True, disp=self.model.endodisp)
-                self.model.schedule.add(fungus)
-                self.model.grid.place_agent(fungus, host.pos)
-                fname += 1
-            else: pass
+        if self.model.endophytism:
+                dist = self.distancefrom(host)
+                prob = exp(-self.D*dist)
+                fname = len(self.model.getall(Fungus)) + 1
+                ## tree (leaf) infection of wood
+                if type(host)==Wood:
+                    if random.random() < prob:
+                        fungus = Fungus(fname, self.model, host.pos, endocomp=True, disp=self.model.endodisp)
+                        self.model.schedule.add(fungus)
+                        self.model.grid.place_agent(fungus, host.pos)
+                        fname += 1
+                    else: pass
+        else: pass 
 
 
     def step(self):
@@ -97,11 +99,13 @@ class Fungus (Agent):
         woods = self.model.getall(Wood)
         for i,ag in enumerate(woods):
             self.spore_infect(ag)
-        if self.endocomp==True:
+        if self.model.endophytism and self.endocomp:
+            print('made it here.')
             trees = self.model.getall(Tree)
             for i,ag in enumerate(trees):
                 if ag.pos == self.pos: print("self-grid")
                 self.spore_infect(ag)
+        else: pass
 
     def spore_infect(self, host):
         dist = self.distancefrom(host)

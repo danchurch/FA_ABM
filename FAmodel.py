@@ -6,26 +6,41 @@ import thomasprocess as tp
 from mesa.space import MultiGrid
 from mesa.time import RandomActivation
 from FAagents import Tree, Wood, Fungus
+from mesa.datacollection import DataCollector
+
+##### reporter functions #######
+
+def sumendos(model):
+    isendo = [ type(i)==Fungus and i.endocomp for i in model.schedule.agents ]
+    sumendos = sum(isendo)
+    return(sumendos)
+
+def sumdecomps(model):
+    isdecomp = [ type(i)==Fungus and not i.endocomp for i in model.schedule.agents ]
+    sumdecomps = sum(isdecomp)
+    return(sumdecomps)
+
 
 ###### model #######
 class Forest (Model): 
     def __init__ (self,  
-                ts=30, ws = 20, ## initial num of trees, wood
+                endophytism = True, ## allow endophyte life style in model run
+                ws = 20, ## initial num of wood
                 endodisp=1, ## dispersal of endos
                 decompdisp=0.1, ## dispersal of decomps
-                leafdisp = 1,
-                leaffall = 4,
+                leafdisp = 1, ## how well do leaves disperse
+                leaffall = 4, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 newwood = 4, ## amount of logs to put on landscape at a time
                 woodfreq = 4, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
-                sigma = 0.5, ## variance of child tree clusters, +/- spread of child clusters
-                mu = 3.0, ## average rate of child tree clusters per unit distance 
+                sigma = 1.0, ## variance of child tree clusters, +/- spread of child clusters
+                mu = 1.0, ## average rate of child tree clusters per unit distance 
                 ): ## grid dimensions
 
-        self.ntrees = ts 
+        self.endophytism = endophytism 
         self.nwood = ws 
         self.endodisp = endodisp 
         self.decompdisp = decompdisp 
@@ -42,6 +57,9 @@ class Forest (Model):
         self.kappa = kappa
         self.sigma = sigma
         self.mu = mu
+        self.datacollector = DataCollector(
+            model_reporters={"Endophytes": sumendos,
+            "Decomposers": sumdecomps})
 
         ## make initial agents:
         self.make_trees()
@@ -126,11 +144,12 @@ class Forest (Model):
             ags = np.array(self.schedule.agents)
             return list(ags[istype])
 
+
     def step(self): 
-        if self.schedule.time % self.woodfreq ==  3:
+        if self.schedule.time % self.woodfreq ==  3: ##  3 = delay from start, may have to adjust this
             for i in range(random.randrange(self.newwood)): self.add_wood()
+        self.datacollector.collect(self)
         self.schedule.step() 
+
     ## add a condition to end model, if no fungi present.
-
-
 
