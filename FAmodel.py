@@ -59,7 +59,7 @@ class Forest (Model):
         self.mu = mu
         self.datacollector = DataCollector(
             model_reporters={"Endophytes": sumendos,
-            "Decomposers": sumdecomps})
+                "Decomposers": sumdecomps})
 
         ## make initial agents:
         self.make_trees()
@@ -97,7 +97,6 @@ class Forest (Model):
             for i in self.grid.get_cell_list_contents(pos):
                 if type(i)==Wood: 
                     i.energy += 3
-                    print("Adding to the pile!")
         else:
             wood = Wood(wname, self, pos)
             self.grid.place_agent(wood, (x,y))
