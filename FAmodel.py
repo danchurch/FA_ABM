@@ -26,14 +26,14 @@ class Forest (Model):
     def __init__ (self,  
                 endophytism = True, ## allow endophyte life style in model run
                 ws = 20, ## initial num of wood
-                endodisp=1, ## dispersal of endos
-                decompdisp=0.1, ## dispersal of decomps
+                endodisp=0.5, ## dispersal of endos
+                decompdisp=0.5, ## dispersal of decomps
                 leafdisp = 1, ## how well do leaves disperse
                 leaffall = 4, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
-                newwood = 4, ## amount of logs to put on landscape at a time
-                woodfreq = 4, ## how often to put new logs onto the landscape 
+                newwood = 1, ## amount of logs to put on landscape at a time
+                woodfreq = 3, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
                 sigma = 1.0, ## variance of child tree clusters, +/- spread of child clusters
@@ -145,10 +145,11 @@ class Forest (Model):
 
 
     def step(self): 
-        if self.schedule.time % self.woodfreq ==  3: ##  3 = delay from start, may have to adjust this
+        if self.schedule.time % self.woodfreq ==  self.woodfreq - 1: ##  = delay from start
             for i in range(random.randrange(self.newwood)): self.add_wood()
         self.datacollector.collect(self)
         self.schedule.step() 
 
     ## add a condition to end model, if no fungi present.
+
 

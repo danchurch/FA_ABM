@@ -5,3 +5,6 @@ random
 lrun.py
 graphics/
 .ipynb_checkpoints/
+endo_runs.p
+decomp_runs.p
+test.svg
