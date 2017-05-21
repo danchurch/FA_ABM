@@ -37,7 +37,7 @@ class Tree (Agent):
     def leaf_infect(self, host):
         if self.model.endophytism:
                 dist = self.distancefrom(host)
-                prob = exp(-self.D*dist)
+                prob = exp(-(1/(self.D+0.00001))*dist) ## add a little to keep from dividing by zero
                 fname = len(self.model.getall(Fungus)) + 1
                 ## tree (leaf) infection of wood
                 if type(host)==Wood:
@@ -100,16 +100,16 @@ class Fungus (Agent):
         for i,ag in enumerate(woods):
             self.spore_infect(ag)
         if self.model.endophytism and self.endocomp:
-            print('made it here.')
+            #print('made it here.')
             trees = self.model.getall(Tree)
             for i,ag in enumerate(trees):
-                if ag.pos == self.pos: print("self-grid")
+                #if ag.pos == self.pos: print("self-grid")
                 self.spore_infect(ag)
         else: pass
 
     def spore_infect(self, host):
         dist = self.distancefrom(host)
-        prob = exp(-self.D*dist)
+        prob = exp(-(1/(self.D+0.00001))*dist)
         fname = len(self.model.getall(Fungus)) + 1
         ## fungus infecting wood
         if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
