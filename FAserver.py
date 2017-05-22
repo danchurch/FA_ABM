@@ -49,4 +49,4 @@ def agent_portrayal(agent):
 canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
 
-server = ModularServer(Forest, [canvas_element], "TreesFungiWood")
+server = ModularServer(Forest, [canvas_element], "TreesFungiWood", ws=30, decompdisp=6, endodisp=0, woodfreq = 2, newwood = 8)
