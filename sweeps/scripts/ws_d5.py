@@ -1,3 +1,12 @@
+import pickle
+from FAmodel import Forest
+from FAmodel import sumendos
+from FAmodel import sumdecomps
+from FAagents import Tree, Wood, Fungus
+import numpy as np
+import matplotlib.pyplot as plt
+import thomasprocess as tp
+
 ############# sweep initial wood ###############
 
 
@@ -17,5 +26,5 @@ for i in [ i for i in range(20,80,10) ]: ## levels of variable
         decomp_list.append(losced.datacollector.get_model_vars_dataframe().Decomposers)
     decomp_runs[i] = decomp_list
 
-pickle.dump(decomp_runs, open('ws_d6.p','wb'))
+pickle.dump(decomp_runs, open('ws_d5.p','wb'))
 

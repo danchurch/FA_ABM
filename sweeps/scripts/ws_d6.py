@@ -1,3 +1,12 @@
+import pickle
+from FAmodel import Forest
+from FAmodel import sumendos
+from FAmodel import sumdecomps
+from FAagents import Tree, Wood, Fungus
+import numpy as np
+import matplotlib.pyplot as plt
+import thomasprocess as tp
+
 ###################################################
 
 ## if it works, do the above with decomp disp=6, too?
