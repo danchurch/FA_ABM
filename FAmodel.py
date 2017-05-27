@@ -26,14 +26,15 @@ class Forest (Model):
     def __init__ (self,  
                 endophytism = True, ## allow endophyte life style in model run
                 ws = 30, ## initial num of wood
-                endodisp=1.0, ## dispersal of endos
-                decompdisp=1.0, ## dispersal of decomps
+                endodisp=1, ## dispersal of endos
+                decompdisp=5, ## dispersal of decomps
                 leafdisp = 1, ## how well do leaves disperse
                 leaffall = 4, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
-                newwood = 2, ## amount of logs to put on landscape at a time
-                woodfreq = 3, ## how often to put new logs onto the landscape 
+                endoloss=0.01,   ## rate of loss of endophyte infect per step
+                newwood = 4, ## amount of logs to put on landscape at a time
+                woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
                 sigma = 1.0, ## variance of child tree clusters, +/- spread of child clusters
@@ -48,6 +49,7 @@ class Forest (Model):
         self.leaffall = leaffall 
         self.numdecomp = numdecomp 
         self.numendo = numendo 
+        self.endoloss = endoloss 
         self.newwood = newwood 
         self.woodfreq = woodfreq
         self.schedule = RandomActivation(self) 
@@ -79,6 +81,7 @@ class Forest (Model):
                     tree = Tree(tname, self, i, 
                                 disp = self.leafdisp, 
                                 leaffall = self.leaffall,
+                                endoloss = self.endoloss,
                                 infection = False)
                     self.schedule.add(tree) 
                     self.grid.place_agent(tree, i)

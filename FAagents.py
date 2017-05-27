@@ -13,12 +13,14 @@ class Tree (Agent):
             infection,
             leaffall, 
             disp, 
+            endoloss, 
             ):
         super().__init__(unique_id, model)
         self.pos = pos
         self.D = disp ## how far do leaves fall?
         self.infection = infection ## has an endophyte infection?
         self.leaffall = leaffall ## how often do leaves drop? 1=every step, 2=every other, etc.
+        self.endoloss = endoloss ## stochastic loss of endophyte infection
 
     def distancefrom(self, other):
         from numpy import array
@@ -51,8 +53,11 @@ class Tree (Agent):
 
 
     def step(self):
-        if self.model.schedule.time % self.leaffall ==  0: 
+        if self.model.schedule.time % self.leaffall ==  0: ## leaf drop
             self.dropleaves()
+        if self.infection == True and random.random() < self.endoloss: ## endohpyte infection loss
+            self.infection = False
+ 
 
 ##### fungi ########
 

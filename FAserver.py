@@ -9,13 +9,13 @@ def agent_portrayal(agent):
     if type(agent) is Tree:
         if agent.infection == False: 
             portrayal = {
-                "Shape":"tree.png", 
+                "Shape":"graphics/tree.png", 
                 "Layer": 0,
                 "scale": 5,
                 }
         if agent.infection == True: 
             portrayal = {
-                "Shape":"tree_infected.png", 
+                "Shape":"graphics/tree_infected.png", 
                 "Layer": 0,
                 "scale": 5,
                 }
@@ -24,7 +24,7 @@ def agent_portrayal(agent):
     elif type(agent) is Fungus: 
         if agent.endocomp == False: 
                 portrayal = {
-                        "Shape":"redmush_off.png", 
+                        "Shape":"graphics/redmush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
                         "scale": 4
@@ -32,7 +32,7 @@ def agent_portrayal(agent):
                 return portrayal
         else:
                 portrayal = {
-                        "Shape":"bluemush_off.png", 
+                        "Shape":"graphics/bluemush_off.png", 
                         "Color": "Blue",
                         "Layer": 2,
                         "scale": 4
@@ -40,7 +40,7 @@ def agent_portrayal(agent):
                 return portrayal
     else:
         portrayal = {
-            "Shape":"log.png", 
+            "Shape":"graphics/log.png", 
             "Layer": 1,
             "scale" : 4,
             }
@@ -51,7 +51,8 @@ canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
 server = ModularServer(Forest, [canvas_element], "TreesFungiWood", 
                         decompdisp=5, 
-                        endodisp=0, 
+                        endodisp=1, 
+                        endoloss=0.25, 
                         newwood = 4,  
                         woodfreq = 1,  
                         )
