@@ -50,8 +50,8 @@ canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
 
 server = ModularServer(Forest, [canvas_element], "TreesFungiWood", 
-                        decompdisp=5, 
-                        endodisp=1, 
+                        decompdisp=20, 
+                        endodisp=5, 
                         endoloss=0.25, 
                         newwood = 4,  
                         woodfreq = 1,  
