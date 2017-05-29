@@ -20,6 +20,26 @@ def sumdecomps(model):
     sumdecomps = sum(isdecomp)
     return(sumdecomps)
 
+def Endo_subs(model):
+    endocomps = 0
+    for cell in model.grid.coord_iter():
+        cell_content = list(cell[0])
+        if any([ type(i) == Fungus for i in cell_content ]):
+            isfung  = np.array([ type(i) == Fungus for i in cell_content ])
+            fung = np.array(cell_content)[isfung]
+            if any( i.endocomp for i in fung ): endocomps += 1
+    return(endocomps)
+
+def Decomp_subs(model):
+    decomps = 0
+    for cell in model.grid.coord_iter():
+        cell_content = list(cell[0])
+        if any([ type(i) == Fungus for i in cell_content ]):
+            isfung  = np.array([ type(i) == Fungus for i in cell_content ])
+            fung = np.array(cell_content)[isfung]
+            if any( not i.endocomp for i in fung ): decomps += 1
+    return(decomps)
+
 
 ###### model #######
 class Forest (Model): 
@@ -28,12 +48,12 @@ class Forest (Model):
                 ws = 30, ## initial num of wood
                 endodisp=1, ## dispersal of endos
                 decompdisp=5, ## dispersal of decomps
-                leafdisp = 1, ## how well do leaves disperse
-                leaffall = 4, ## how frequently do leaves disperse
+                leafdisp = 4, ## how well do leaves disperse
+                leaffall = 1, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 endoloss=0.01,   ## rate of loss of endophyte infect per step
-                newwood = 4, ## total energy added in new logs each step
+                newwood = 70, ## total energy added in new logs each step
                 woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
@@ -60,8 +80,12 @@ class Forest (Model):
         self.sigma = sigma
         self.mu = mu
         self.datacollector = DataCollector(
-            model_reporters={"Endophytes": sumendos,
-                "Decomposers": sumdecomps})
+            model_reporters={
+                "Endophytes": sumendos,
+                "Endo_subs": Endo_subs,
+                "Decomposers": sumdecomps,
+                "Decomp_subs": Decomp_subs,
+                })
 
         ## make initial agents:
         self.make_trees()
@@ -113,10 +137,8 @@ class Forest (Model):
             newlog=round(random.randrange(self.newwood-sum(cwdlist)))+1 ## new log, at least 1 kg
             cwdlist.append(newlog) ## put newlog on the list, until newwood reached)
         wname = len(self.getall(Wood)) + 1 
-        print(cwdlist)
         for i in cwdlist:
             self.add_wood()
-            print("experimental wood added")
 
     def make_fungi(self):
         fname = len(self.getall(Fungus)) + 1 
