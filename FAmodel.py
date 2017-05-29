@@ -33,7 +33,7 @@ class Forest (Model):
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 endoloss=0.01,   ## rate of loss of endophyte infect per step
-                newwood = 4, ## amount of logs to put on landscape at a time
+                newwood = 4, ## total energy added in new logs each step
                 woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
@@ -89,8 +89,8 @@ class Forest (Model):
                 except IndexError:
                     print ("Tree out-of-bounds, ipos=",i,"grid dim=", self.grid.width, self.grid.height)
 
-
-    def add_wood(self):
+    ## add initial wood to landscape
+    def add_wood(self): 
         wname = len(self.getall(Wood)) + 1 
         x = random.randrange(self.grid.width)
         y = random.randrange(self.grid.height)
@@ -99,12 +99,24 @@ class Forest (Model):
         if any([ type(i)==Wood for i in self.grid.get_cell_list_contents(pos) ]):
             for i in self.grid.get_cell_list_contents(pos):
                 if type(i)==Wood: 
-                    i.energy += 3
+                    i.energy += random.randrange(self.newwood) ## 
         else:
-            wood = Wood(wname, self, pos)
+            wood = Wood(wname, self, pos, energy = random.randrange(self.newwood)+1) ## 
             self.grid.place_agent(wood, (x,y))
             self.schedule.add(wood)
             wname += 1 
+
+    ## non-initial, step addition of wood
+    def cwd(self): 
+        cwdlist = [round(random.randrange(self.newwood))+1] ## our first log of the step, at least 1 
+        while sum(cwdlist) < round(self.newwood*.9)-1 : ## until we get at 90% of our assigned cwd...
+            newlog=round(random.randrange(self.newwood-sum(cwdlist)))+1 ## new log, at least 1 kg
+            cwdlist.append(newlog) ## put newlog on the list, until newwood reached)
+        wname = len(self.getall(Wood)) + 1 
+        print(cwdlist)
+        for i in cwdlist:
+            self.add_wood()
+            print("experimental wood added")
 
     def make_fungi(self):
         fname = len(self.getall(Fungus)) + 1 
@@ -146,13 +158,14 @@ class Forest (Model):
             ags = np.array(self.schedule.agents)
             return list(ags[istype])
 
-
     def step(self): 
         if self.schedule.time % self.woodfreq ==  self.woodfreq - 1: ##  = delay from start
-            for i in range(random.randrange(self.newwood)): self.add_wood()
+            self.cwd()
         self.datacollector.collect(self)
         self.schedule.step() 
 
     ## add a condition to end model, if no fungi present.
+
+
 
 

@@ -105,10 +105,8 @@ class Fungus (Agent):
         for i,ag in enumerate(woods):
             self.spore_infect(ag)
         if self.model.endophytism and self.endocomp:
-            #print('made it here.')
             trees = self.model.getall(Tree)
             for i,ag in enumerate(trees):
-                #if ag.pos == self.pos: print("self-grid")
                 self.spore_infect(ag)
         else: pass
 
@@ -118,6 +116,7 @@ class Fungus (Agent):
         fname = len(self.model.getall(Fungus)) + 1
         ## fungus infecting wood
         if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
+            #print(host.energy, host.startenergy)
             if random.random() < prob*(host.energy/host.startenergy): ## reduce likelihood if already infected
                 fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp, disp = self.model.decompdisp)
                 self.model.schedule.add(fungus)
@@ -134,16 +133,16 @@ class Fungus (Agent):
             pass
 
     def step(self):
-        if self.energy > 3:
+        if self.energy > 4:
             self.sporulate()
-            self.energy -= 3
+            self.energy -= 4
         self.eat()
 
 
 ###### wood #########
 
 class Wood (Agent):
-    def __init__(self, unique_id, model, pos, energy = 10): 
+    def __init__(self, unique_id, model, pos, energy): 
         super().__init__(unique_id, model)
         self.energy = energy
         self.startenergy = energy
