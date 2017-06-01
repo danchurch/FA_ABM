@@ -10,15 +10,27 @@ from mesa.datacollection import DataCollector
 
 ##### reporter functions #######
 
-def sumendos(model):
+## this is the number of endophyte-competent fungi that have found a log to rot
+def sumendos(model): 
     isendo = [ type(i)==Fungus and i.endocomp for i in model.schedule.agents ]
     sumendos = sum(isendo)
     return(sumendos)
 
+## this is the number of endophyte-INcompetent fungi that have found a log to rot
 def sumdecomps(model):
     isdecomp = [ type(i)==Fungus and not i.endocomp for i in model.schedule.agents ]
     sumdecomps = sum(isdecomp)
     return(sumdecomps)
+
+## both of the above are a little misleading. Two fungal agents of the same 
+## species can be sharing a log, I built this in to reflect the possibility
+## that heavy dispersal of spores from nearby may cause quicker rot, allows the
+## a fungus to infect a substrate at different points. But not that informative
+## as a statistic for our purposes. 
+
+## so here are the number of substrates that EC+ and EC- fungi occupy in 
+## total, no extra points for having multiple infections on that piece of 
+## wood:
 
 def Endo_subs(model):
     endocomps = 0
@@ -53,7 +65,7 @@ class Forest (Model):
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 endoloss=0.01,   ## rate of loss of endophyte infect per step
-                newwood = 70, ## total energy added in new logs each step
+                newwood = 4, ## total energy added in new logs each step
                 woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.01, ## average rate of parent tree clusters per unit distance 
