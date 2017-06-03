@@ -1,11 +1,6 @@
 *.sw*
 __pycache__
 *.pyc
-random
 lrun.py
 .ipynb_checkpoints/
-endo_runs.p
-decomp_runs.p
-test.svg
-blue_runs.p
-red_runs.p
+runsim.sh
