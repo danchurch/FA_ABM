@@ -59,19 +59,19 @@ class Forest (Model):
                 endophytism = True, ## allow endophyte life style in model run
                 ws = 30, ## initial num of wood
                 endodisp=1, ## dispersal of endos
-                decompdisp=5, ## dispersal of decomps
+                decompdisp=8, ## dispersal of decomps
                 leafdisp = 4, ## how well do leaves disperse
                 leaffall = 1, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
-                endoloss=0.01,   ## rate of loss of endophyte infect per step
-                newwood = 4, ## total energy added in new logs each step
+                endoloss=0.05,   ## rate of loss of endophyte infect per step
+                newwood = 6, ## total energy added in new logs each step
                 woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
-                kappa = 0.01, ## average rate of parent tree clusters per unit distance 
-                sigma = 1.0, ## variance of child tree clusters, +/- spread of child clusters
-                mu = 1.0, ## average rate of child tree clusters per unit distance 
-                ): ## grid dimensions
+                kappa = 0.03, ## average rate of parent tree clusters per unit distance 
+                sigma = 3.0, ## variance of child tree clusters, +/- spread of child clusters
+                mu = 2.2, ## average rate of child tree clusters per unit distance 
+                ): 
 
         self.endophytism = endophytism 
         self.nwood = ws 

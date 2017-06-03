@@ -50,9 +50,19 @@ canvas_element = CanvasGrid(agent_portrayal, 100,100,500,500)
 
 
 server = ModularServer(Forest, [canvas_element], "TreesFungiWood", 
-                        #decompdisp=20, 
-                        #endodisp=5, 
-                        #endoloss=0.25, 
-                        #newwood = 4,  
-                        #woodfreq = 1,  
+                endophytism = True, ## allow endophyte life style in model run
+                ws = 30, 
+                endodisp=1,
+                decompdisp=10, 
+                leafdisp = 4, 
+                leaffall = 1, 
+                numdecomp=1, 
+                numendo=1,   
+                endoloss=0.05,   
+                newwood = 6, 
+                woodfreq = 1, 
+                width = 100, 
+                kappa = 0.03, 
+                sigma = 3.0, 
+                mu = 2.2, 
                         )
