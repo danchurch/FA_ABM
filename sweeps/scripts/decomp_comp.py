@@ -25,7 +25,7 @@ with open('updates_decomp_comp.txt', 'a') as upd:
                     numdecomp=1,
                     numendo=1,
                     endoloss=0.05,
-                    newwood = 6,
+                    newwood = 15,
                     woodfreq = 1,
                     width = 100,
                     kappa = 0.03,

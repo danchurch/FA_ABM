@@ -65,7 +65,7 @@ class Forest (Model):
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
                 endoloss=0.05,   ## rate of loss of endophyte infect per step
-                newwood = 6, ## total energy added in new logs each step
+                newwood = 15, ## total energy added in new logs each step
                 woodfreq = 1, ## how often to put new logs onto the landscape 
                 width = 100, ## grid dimensions, only one (squares only)
                 kappa = 0.03, ## average rate of parent tree clusters per unit distance 

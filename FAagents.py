@@ -116,7 +116,6 @@ class Fungus (Agent):
         fname = len(self.model.getall(Fungus)) + 1
         ## fungus infecting wood
         if type(host)==Wood and dist>0: ## don't allow reinfection feedback, dist > 0
-            #print(host.energy, host.startenergy)
             if random.random() < prob*(host.energy/host.startenergy): ## reduce likelihood if already infected
                 fungus = Fungus(fname, self.model, host.pos, endocomp=self.endocomp, disp = self.model.decompdisp)
                 self.model.schedule.add(fungus)
