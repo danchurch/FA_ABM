@@ -1,10 +1,3 @@
-###############################################
-
-## what next?
-
-## basic endo/decomp competitions
-
-
 import pickle
 from FAmodel import Forest
 from FAmodel import sumendos
@@ -14,27 +7,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 import thomasprocess as tp
 
-with open('updates_endodisp.txt', 'a') as upd:
-    lvls = [ a for a in range(1,10,1) ]
+lvls = list(range(1,11,1))
+with open('updates_endo_disp.txt', 'a') as upd:
     runs = {}
     for i in lvls: ## levels of variable
-        run_list = []
+        run_list = [] 
         upd.write('starting level: %s \n' %i)
         for j in range(100): ## number of simulations per level of parameter
-            losced = Forest(
-                    endophytism = True, ## Turn off endos
+            losced = Forest( 
+                    endophytism = True, ## Turn on endos
                     ws = 30,
-                    endodisp=i, ## parameter 
-                    decompdisp=8, 
+                    endodisp=i, ## variable of interest
+                    decompdisp=0, ## Turn off EC- fungi
                     leafdisp = 4,
-                    leaffall = 1,
+                    leaffall = 1, 
                     numdecomp=1,
                     numendo=1,
                     endoloss=0.05,
-                    newwood = 6, 
+                    newwood = 6, ## low rate of wood deposition
                     woodfreq = 1,
                     width = 100,
-                    kappa = 0.03,
+                    kappa = 0.03, ## dense forest
                     sigma = 3.0,
                     mu = 2.2,
                             )
@@ -44,5 +37,5 @@ with open('updates_endodisp.txt', 'a') as upd:
             ## data into lists
         runs[i] = run_list
 
-pickle.dump(runs, open('endodisp_sweep.p', 'wb'))
+pickle.dump(runs, open('endo_disp.p', 'wb'))
 
