@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import thomasprocess as tp
 
 import argparse
+import datetime
 
 ## instantiate our parser:
 parser = argparse.ArgumentParser()
@@ -40,7 +41,7 @@ parser.add_argument("-mu", type=float, required=False)
 parser.add_argument("-sims", type=int, required=True)
 
 ## output pickle file name:
-parser.add_argument("-fileout", required=True)
+parser.add_argument("-fileout", required=False)
 
 
 ## get our commandline arguments into the environment
@@ -48,7 +49,6 @@ args = parser.parse_args()
 
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
-#for j in range(5): ## testing_________
 
     losced = Forest(endophytism = args.no_endophytism)
     ## the initial wood settings have to be put in place at the instantiation of the model:
@@ -72,6 +72,19 @@ for j in range(args.sims): ## number of simulations per level of parameter
     run_list.append(losced.datacollector.get_model_vars_dataframe())
     ## data into lists
 
-pickle.dump(run_list, open('%s.p' %args.fileout, 'wb'))
+#print('args.no_endophytism? = %s' %args.no_endophytism)
+#print('losced.endophytism = %s' %losced.endophytism)
+#print('args.endodisp? = %s' %args.endodisp)
+#print('losced.endodisp? = %s' %losced.endodisp)
+
+if args.fileout:
+    fileout = args.fileout
+else:
+    fileout = 'run.' + str(datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()).replace(':', '.') + '.p'
+
+pickle.dump(run_list, open('%s' %fileout, 'wb'))
 
 
+
+
+uniq_filename = str(datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()).replace(':', '.')
