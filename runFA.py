@@ -53,6 +53,7 @@ else: ## if not, timestamp
 ## set log
 logging.basicConfig(filename=fileout + '.log',level=logging.INFO)
 
+logging.info('start %s' %datetime.datetime.now().time().isoformat())
 
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
@@ -79,16 +80,8 @@ for j in range(args.sims): ## number of simulations per level of parameter
         losced.step() 
         logging.info('run %s step %s' %(j,k))
     run_list.append(losced.datacollector.get_model_vars_dataframe())
-    ## data into lists
-
-#print('args.no_endophytism? = %s' %args.no_endophytism)
-#print('losced.endophytism = %s' %losced.endophytism)
-#print('args.endodisp? = %s' %args.endodisp)
-#print('losced.endodisp? = %s' %losced.endodisp)
-
 
 picklefile = fileout + ".p"
 pickle.dump(run_list, open(picklefile, 'wb'))
 
-
-
+logging.info('finish %s' %datetime.datetime.now().time().isoformat())
