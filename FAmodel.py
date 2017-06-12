@@ -58,9 +58,9 @@ class Forest (Model):
     def __init__ (self,  
                 endophytism = True, ## allow endophyte life style in model run
                 ws = 30, ## initial num of wood
-                endodisp=1, ## dispersal of endos
-                decompdisp=8, ## dispersal of decomps
-                leafdisp = 4, ## how well do leaves disperse
+                endodisp=1.0, ## dispersal of endos
+                decompdisp=8.0, ## dispersal of decomps
+                leafdisp = 4.0, ## how well do leaves disperse
                 leaffall = 1, ## how frequently do leaves disperse
                 numdecomp=1, ## initial number of decomposers
                 numendo=1,   ## initial number of endos
@@ -71,6 +71,7 @@ class Forest (Model):
                 kappa = 0.03, ## average rate of parent tree clusters per unit distance 
                 sigma = 3.0, ## variance of child tree clusters, +/- spread of child clusters
                 mu = 2.2, ## average rate of child tree clusters per unit distance 
+                nuke = False, ## make landscape, but no agents
                 ): 
 
         self.endophytism = endophytism 
@@ -100,9 +101,10 @@ class Forest (Model):
                 })
 
         ## make initial agents:
-        self.make_trees()
-        for i in range(self.nwood): self.add_wood() ## no make_woods method
-        self.make_fungi()
+        if not nuke:
+            self.make_trees()
+            for i in range(self.nwood): self.add_wood() ## no make_woods method
+            self.make_fungi()
 
     def make_trees(self):
         ## let's use our thomas process module
@@ -182,7 +184,14 @@ class Forest (Model):
 
     def findsubstrate (self, substrate):
         Subs = self.getall(substrate)
-        return(random.choice(Subs).pos) ## pick from these, return position
+        try:
+            somestick = (random.choice(Subs).pos) ## pick from these, return position
+            return(somestick) ## pick from these, return position
+        except IndexError:
+            print("no substrates")
+            pass
+
+
 
     def getall(self, typeof):
         if not any([ type(i)==typeof for i in self.schedule.agents ]):

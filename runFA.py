@@ -20,7 +20,7 @@ import logging
 parser = argparse.ArgumentParser()
 
 ## model parameters:
-parser.add_argument("-no_endophytism", action='store_false', required=False)
+parser.add_argument("-endophytism", type=bool, required=False)
 parser.add_argument("-ws", type=float, required=False)
 parser.add_argument("-endodisp", type=float, required=False)
 parser.add_argument("-decompdisp", type=float, required=False)
@@ -58,28 +58,42 @@ logging.info('start %s' %datetime.datetime.now().time().isoformat())
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
 
-    losced = Forest(endophytism = args.no_endophytism)
-    ## the initial wood settings have to be put in place at the instantiation of the model:
-    if args.ws: losced = Forest(endophytism = args.no_endophytism, ws = args.ws)
-    if args.endodisp: losced.endodisp = args.endodisp
-    if args.decompdisp: losced.decompdisp = args.decompdisp 
-    if args.leafdisp: losced.leafdisp = args.leafdisp 
-    if args.leaffall: losced.leaffall = args.leaffall 
-    if args.numdecomp: losced.numdecomp = args.numdecomp 
-    if args.numendo: losced.numendo = args.numendo 
-    if args.endoloss: losced.endoloss = args.endoloss 
-    if args.newwood: losced.newwood = args.newwood 
-    if args.woodfreq: losced.woodfreq = args.woodfreq 
-    if args.width: losced.width = args.width 
-    ## the tree settings also have to be put in place at the instantiation of the model:
-    if args.kappa: losced = Forest(endophytism = args.no_endophytism, kappa = args.kappa)
-    if args.sigma: losced = Forest(endophytism = args.no_endophytism, sigma = args.sigma)
-    if args.mu: losced = Forest(endophytism = args.no_endophytism, mu = args.mu)
+    ## make an empty landscape, enable/disable endophytism
+    losced = Forest(
+                    nuke = True
+                    )
+
+    ## set user-defined changes to defaults of model:
+
+    if args.endophytism is not None: losced.endophytism = args.endophytism
+    if args.ws is not None: losced.ws = args.ws
+    if args.endodisp is not None: losced.endodisp = args.endodisp
+    if args.decompdisp is not None: losced.decompdisp = args.decompdisp 
+    if args.leafdisp is not None: losced.leafdisp = args.leafdisp 
+    if args.leaffall is not None: losced.leaffall = args.leaffall 
+    if args.numdecomp is not None: losced.numdecomp = args.numdecomp 
+    if args.numendo is not None: losced.numendo = args.numendo 
+    if args.endoloss is not None: losced.endoloss = args.endoloss 
+    if args.newwood is not None: losced.newwood = args.newwood 
+    if args.woodfreq is not None: losced.woodfreq = args.woodfreq 
+    if args.width is not None: losced.width = args.width 
+    if args.kappa is not None: losced.kappa = args.kappa 
+    if args.sigma is not None: losced.sigma = args.sigma
+    if args.mu is not None: losced.mu = args.mu
+
+    ## now add in initial agents, with new model settings:
+    losced.make_trees()
+    for i in range(losced.nwood): losced.add_wood() ## no make_woods method
+    losced.make_fungi()
+
+    print('losced.endodisp=',losced.endodisp)
+
     #for k in range(50):  ## number of steps before ending the model
     for k in range(2): ## test, just two steps 
         losced.step() 
         logging.info('run %s step %s' %(j,k))
     run_list.append(losced.datacollector.get_model_vars_dataframe())
+
 
 picklefile = fileout + ".p"
 pickle.dump(run_list, open(picklefile, 'wb'))
