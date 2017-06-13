@@ -88,8 +88,8 @@ for j in range(args.sims): ## number of simulations per level of parameter
 
     print('losced.endodisp=',losced.endodisp)
 
-    #for k in range(50):  ## number of steps before ending the model
-    for k in range(2): ## test, just two steps 
+    for k in range(50):  ## number of steps before ending the model
+    #for k in range(2): ## test, just two steps 
         losced.step() 
         logging.info('run %s step %s' %(j,k))
     run_list.append(losced.datacollector.get_model_vars_dataframe())
