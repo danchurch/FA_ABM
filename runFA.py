@@ -54,6 +54,7 @@ else: ## if not, timestamp
 logging.basicConfig(filename=fileout + '.log',level=logging.INFO)
 
 logging.info('start %s' %datetime.datetime.now().time().isoformat())
+logging.info('usersets %s' %args)
 
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
@@ -86,12 +87,12 @@ for j in range(args.sims): ## number of simulations per level of parameter
     for i in range(losced.nwood): losced.add_wood() ## no make_woods method
     losced.make_fungi()
 
-    print('losced.endodisp=',losced.endodisp)
-
     for k in range(50):  ## number of steps before ending the model
     #for k in range(2): ## test, just two steps 
         losced.step() 
-        logging.info('run %s step %s' %(j,k))
+        logging.info('run %s step %s' %(j,k)) ## what step?
+        fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi
+        logging.info('num of fungi %s' %fun)
     run_list.append(losced.datacollector.get_model_vars_dataframe())
 
 
