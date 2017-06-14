@@ -39,6 +39,8 @@ parser.add_argument("-mu", type=float, required=False)
 parser.add_argument("-sims", type=int, required=True)
 ## output pickle file name:
 parser.add_argument("-fileout", required=False)
+## name of sweep, to be stamped at the top of the log file
+parser.add_argument("-sweepname", required=False)
 
 
 ## get our commandline arguments into the environment
@@ -53,8 +55,10 @@ else: ## if not, timestamp
 ## set log
 logging.basicConfig(filename=fileout + '.log',level=logging.INFO)
 
-logging.info('start %s' %datetime.datetime.now().time().isoformat())
+## header info
+logging.info('%s' %args.sweepname)
 logging.info('usersets %s' %args)
+logging.info('start %s' %datetime.datetime.now().time().isoformat())
 
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
@@ -87,8 +91,8 @@ for j in range(args.sims): ## number of simulations per level of parameter
     for i in range(losced.nwood): losced.add_wood() ## no make_woods method
     losced.make_fungi()
 
-    for k in range(50):  ## number of steps before ending the model
-    #for k in range(2): ## test, just two steps 
+    #for k in range(50):  ## number of steps before ending the model
+    for k in range(2): ## test, just two steps 
         losced.step() 
         logging.info('run %s step %s' %(j,k)) ## what step?
         fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi
