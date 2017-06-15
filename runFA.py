@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 
 ## model parameters:
 parser.add_argument("-endophytism", type=bool, required=False)
-parser.add_argument("-ws", type=float, required=False)
+parser.add_argument("-ws", type=int, required=False)
 parser.add_argument("-endodisp", type=float, required=False)
 parser.add_argument("-decompdisp", type=float, required=False)
 parser.add_argument("-leafdisp", type=float, required=False)
@@ -48,7 +48,7 @@ args = parser.parse_args()
 
 ## set our filename
 if args.fileout: ## if one was set by user
-    fileout = args.fileout
+    fileout = args.fileout + str(datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()).replace(':', '.')
 else: ## if not, timestamp
     fileout = 'run.' + str(datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()).replace(':', '.') 
 
@@ -71,7 +71,7 @@ for j in range(args.sims): ## number of simulations per level of parameter
     ## set user-defined changes to defaults of model:
 
     if args.endophytism is not None: losced.endophytism = args.endophytism
-    if args.ws is not None: losced.ws = args.ws
+    if args.ws is not None: losced.nwood = args.ws
     if args.endodisp is not None: losced.endodisp = args.endodisp
     if args.decompdisp is not None: losced.decompdisp = args.decompdisp 
     if args.leafdisp is not None: losced.leafdisp = args.leafdisp 
