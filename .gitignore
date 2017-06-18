@@ -4,3 +4,4 @@ __pycache__
 lrun.py
 .ipynb_checkpoints/
 runsim.sh
+orgruns.sh
