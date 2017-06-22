@@ -99,14 +99,13 @@ class Fungus (Agent):
             mywood = aa[bb][0] 
             mywood.energy -= 1 ## wood loses energy
             self.energy += 1 ## fungi gets energy
-        elif self.energy > 1: ## if no wood present the respiration clock starts because...
+        ## if no wood present the respiration clock starts because...
+        else: 
             self.energy -= 1 ## energy reserves begin to erode
-        elif self.energy < 1: ## and die if energy is less than one
-            self.die() 
+            print("eating a whole lotta nothing")
 
 
 
-## wait. they die if no wood? Shouldn't they just die if no energy? fix
 
 
     def sporulate(self):
@@ -143,12 +142,13 @@ class Fungus (Agent):
     def step(self):
         if self.energy > 4:
             self.sporulate()
-            print (self.energy)
             if self.endocomp: self.model.endospor += 1
             else: self.model.decompspor += 1 
             self.energy -= 4
-            print (self.energy)
         self.eat()
+        if self.energy < 1: ## and die if energy is less than one
+            self.die() 
+            print("starved")
 
 
 ###### wood #########
