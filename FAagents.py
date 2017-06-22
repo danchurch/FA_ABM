@@ -102,7 +102,6 @@ class Fungus (Agent):
         ## if no wood present the respiration clock starts because...
         else: 
             self.energy -= 1 ## energy reserves begin to erode
-            print("eating a whole lotta nothing")
 
 
 
@@ -148,7 +147,6 @@ class Fungus (Agent):
         self.eat()
         if self.energy < 1: ## and die if energy is less than one
             self.die() 
-            print("starved")
 
 
 ###### wood #########
