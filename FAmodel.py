@@ -52,6 +52,17 @@ def Decomp_subs(model):
             if any( not i.endocomp for i in fung ): decomps += 1
     return(decomps)
 
+## track the number of endophyte-infected trees at every step:
+def bluetrees(model): 
+    return(len([ i for i in model.schedule.agents if type(i)==Tree and i.infection==True ]))
+
+## track the sporulations of EC- fungi:
+
+def decompspor_count(model):
+    return(model.decompspor)
+
+def endospor_count(model):
+    return(model.endospor)
 
 ###### model #######
 class Forest (Model): 
@@ -92,16 +103,21 @@ class Forest (Model):
         self.kappa = kappa
         self.sigma = sigma
         self.mu = mu
+        self.decompspor = 0 ## sporulation events this turn
+        self.endospor = 0 ## sporulation events this turn
         self.datacollector = DataCollector(
             model_reporters={
                 "Endophytes": sumendos,
                 "Endo_subs": Endo_subs,
                 "Decomposers": sumdecomps,
                 "Decomp_subs": Decomp_subs,
+                "Infected_trees": bluetrees,
+                "decompspor_count": decompspor_count,
+                "endospor_count": endospor_count,
                 })
 
         ## make initial agents:
-        if not nuke:
+        if not nuke: ## if not a nuclear holocaust where life is devoid
             self.make_trees()
             for i in range(self.nwood): self.add_wood() ## no make_woods method
             self.make_fungi()
@@ -164,7 +180,7 @@ class Forest (Model):
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass 
             else:
-                fungus = Fungus(fname, self, pos, endocomp=False, disp = self.decompdisp)
+                fungus = Fungus(fname, self, pos, energy=10, endocomp=False, disp = self.decompdisp)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
                 fname += 1; decomps += 1
@@ -176,7 +192,7 @@ class Forest (Model):
             if any([ type(i)==Fungus for i in self.grid.get_cell_list_contents(pos) ]):
                 pass
             else:
-                fungus = Fungus(fname, self, pos, endocomp=True, disp = self.endodisp)
+                fungus = Fungus(fname, self, pos, energy=10, endocomp=True, disp = self.endodisp)
                 self.schedule.add(fungus) 
                 self.grid.place_agent(fungus, pos)
                 fname += 1; endos += 1
@@ -203,11 +219,13 @@ class Forest (Model):
 
     def step(self): 
         if self.schedule.time % self.woodfreq ==  self.woodfreq - 1: ##  = delay from start
-            self.cwd()
-        self.datacollector.collect(self)
-        self.schedule.step() 
+            self.cwd() ## add wood
+        self.schedule.step() ## agents do their thing
+        self.datacollector.collect(self) ## collect data
+        self.decompspor = 0 ## reset sporulation event tally
+        self.endospor = 0 ## reset sporulation event tally
 
-    ## add a condition to end model, if no fungi present.
+    ## add a condition to end model, if no fungi present?
 
 
 

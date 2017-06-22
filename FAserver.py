@@ -65,5 +65,4 @@ server = ModularServer(Forest, [canvas_element], "TreesFungiWood",
                 kappa = 0.03, 
                 sigma = 3.0, 
                 mu = 2.2, 
-                #clearcut=True
                         )

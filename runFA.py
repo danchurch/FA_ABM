@@ -37,6 +37,8 @@ parser.add_argument("-sigma", type=float, required=False)
 parser.add_argument("-mu", type=float, required=False)
 ## set number of simulations:
 parser.add_argument("-sims", type=int, required=True)
+## set number of steps:
+parser.add_argument("-steps", type=int, required=False, default=50)
 ## output pickle file name:
 parser.add_argument("-fileout", required=False)
 
@@ -89,8 +91,7 @@ for j in range(args.sims): ## number of simulations per level of parameter
     for i in range(losced.nwood): losced.add_wood() ## no make_woods method
     losced.make_fungi()
 
-    for k in range(50):  ## number of steps before ending the model
-    #for k in range(2): ## test, just two steps 
+    for k in range(args.steps):  ## number of steps before ending the model
         losced.step() 
         logging.info('run %s step %s' %(j,k)) ## what step?
         fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi

@@ -51,6 +51,9 @@ class Tree (Agent):
                     else: pass
         else: pass 
 
+    def die(self):
+        self.model.grid._remove_agent(self.pos, self)
+        self.model.schedule.remove(self)
 
     def step(self):
         if self.model.schedule.time % self.leaffall ==  0: ## leaf drop
@@ -68,7 +71,7 @@ class Fungus (Agent):
                 pos, 
                 endocomp,
                 disp,
-                energy = 10, 
+                energy = 1, 
                 ):
         super().__init__(unique_id, model)
         self.pos = pos 
@@ -89,15 +92,21 @@ class Fungus (Agent):
         self.model.schedule.remove(self)
 
     def eat(self):
-        self.energy += 1 ## fungi gets energy
         ## find the wood:
         aa = array(self.model.grid.get_cell_list_contents(self.pos))
         bb = array([ type(i)==Wood for i in aa ], dtype=bool)
-        if any(bb):
-            mywood = aa[bb][0]
+        if any(bb): ## if there are any wood on the cell...
+            mywood = aa[bb][0] 
             mywood.energy -= 1 ## wood loses energy
-        else: 
-            self.die()
+            self.energy += 1 ## fungi gets energy
+        elif self.energy > 1: ## if no wood present the respiration clock starts because...
+            self.energy -= 1 ## energy reserves begin to erode
+        elif self.energy < 1: ## and die if energy is less than one
+            self.die() 
+
+
+
+## wait. they die if no wood? Shouldn't they just die if no energy? fix
 
 
     def sporulate(self):
@@ -134,7 +143,11 @@ class Fungus (Agent):
     def step(self):
         if self.energy > 4:
             self.sporulate()
+            print (self.energy)
+            if self.endocomp: self.model.endospor += 1
+            else: self.model.decompspor += 1 
             self.energy -= 4
+            print (self.energy)
         self.eat()
 
 
