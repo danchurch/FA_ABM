@@ -69,7 +69,7 @@ class Forest (Model):
     def __init__ (self,  
                 endophytism = True, ## allow endophyte life style in model run
                 ws = 30, ## initial num of wood
-                endodisp=1.0, ## dispersal of endos
+                endodisp=2.0, ## dispersal of endos
                 decompdisp=10.0, ## dispersal of decomps
                 leafdisp = 4.0, ## how well do leaves disperse
                 leaffall = 1, ## how frequently do leaves disperse
