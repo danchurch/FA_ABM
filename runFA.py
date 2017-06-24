@@ -20,7 +20,10 @@ import logging
 parser = argparse.ArgumentParser()
 
 ## model parameters:
-parser.add_argument("-endophytism", type=bool, required=False)
+parser.add_argument('-endophytism', dest='endophytism', action='store_true')
+parser.add_argument('-no-endophytism', dest='endophytism', action='store_false')
+parser.set_defaults(endophytism=True)
+#parser.add_argument("-endophytism", type=bool, required=False) ## doesn't work
 parser.add_argument("-ws", type=int, required=False)
 parser.add_argument("-endodisp", type=float, required=False)
 parser.add_argument("-decompdisp", type=float, required=False)
@@ -42,6 +45,9 @@ parser.add_argument("-steps", type=int, required=False, default=50)
 ## output pickle file name:
 parser.add_argument("-fileout", required=False)
 
+parser.add_argument('--endophytism', dest='endophytism', action='store_true')
+parser.add_argument('--no-endophytism', dest='endophytism', action='store_false')
+parser.set_defaults(endophytism=True)
 
 ## get our commandline arguments into the environment
 args = parser.parse_args()
