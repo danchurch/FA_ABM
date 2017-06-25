@@ -207,6 +207,17 @@ class Forest (Model):
             print("no substrates")
             pass
 
+    def selthin(self, intensity):
+        ## intensity should be in the form of a percentage
+        aa=self.getall(Tree)
+        if intensity > 1 or intensity < 0:
+                print("too intense! (or not intense enough)")
+                pass
+        else:
+            bb=random.sample(aa, int(len(aa)*intensity))
+            [ i.die() for i in bb ]
+
+
 
 
     def getall(self, typeof):
