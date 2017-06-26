@@ -228,15 +228,6 @@ class Forest (Model):
             ags = np.array(self.schedule.agents)
             return list(ags[istype])
 
-    def step(self): 
-        if self.schedule.time % self.woodfreq ==  self.woodfreq - 1: ##  = delay from start
-            self.cwd() ## add wood
-        self.schedule.step() ## agents do their thing
-        self.datacollector.collect(self) ## collect data
-        self.decompspor = 0 ## reset sporulation event tally
-        self.endospor = 0 ## reset sporulation event tally
-
-    ## add a condition to end model, if no fungi present?
 
 ############### deforestation functions ###########
 
@@ -300,4 +291,17 @@ class Forest (Model):
                 "remnants":self.getall(Tree),
                 "cuttrees":bb,
                 })
- 
+
+############################################################# 
+## step
+
+
+    def step(self): 
+        if self.schedule.time % self.woodfreq ==  self.woodfreq - 1: ##  = delay from start
+            self.cwd() ## add wood
+        self.schedule.step() ## agents do their thing
+        self.datacollector.collect(self) ## collect data
+        self.decompspor = 0 ## reset sporulation event tally
+        self.endospor = 0 ## reset sporulation event tally
+
+    ## add a condition to end model, if no fungi present?
