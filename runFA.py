@@ -44,10 +44,20 @@ parser.add_argument("-sims", type=int, required=True)
 parser.add_argument("-steps", type=int, required=False, default=50)
 ## output pickle file name:
 parser.add_argument("-fileout", required=False)
-
-parser.add_argument('--endophytism', dest='endophytism', action='store_true')
-parser.add_argument('--no-endophytism', dest='endophytism', action='store_false')
-parser.set_defaults(endophytism=True)
+## what type, if any, of deforestation? when? How much?
+parser.add_argument("-deforest_type", 
+                    type=str, 
+                    choices=['thin','fragment'],
+                    required=False,
+                    )
+parser.add_argument("-deforest_steps", 
+                    nargs='*', 
+                    type=int, 
+                    required=False)
+parser.add_argument("-deforest_args", 
+                    nargs='*', 
+                    type=float, 
+                    required=False)
 
 ## get our commandline arguments into the environment
 args = parser.parse_args()
@@ -69,12 +79,12 @@ logging.info('start %s' %datetime.datetime.now().time().isoformat())
 run_list = [] 
 for j in range(args.sims): ## number of simulations per level of parameter
 
-    ## make an empty landscape, enable/disable endophytism
+    ## make an empty landscape
     losced = Forest(
                     nuke = True
                     )
 
-    ## set user-defined changes to defaults of model:
+    ## then set user-defined changes to defaults of model:
 
     if args.endophytism is not None: losced.endophytism = args.endophytism
     if args.ws is not None: losced.nwood = args.ws
@@ -94,15 +104,32 @@ for j in range(args.sims): ## number of simulations per level of parameter
 
     ## now add in initial agents, with new model settings:
     losced.make_trees()
-    for i in range(losced.nwood): losced.add_wood() ## no make_woods method
+    for i in range(losced.nwood): losced.add_wood() 
     losced.make_fungi()
 
-    for k in range(args.steps):  ## number of steps before ending the model
-        losced.step() 
-        logging.info('run %s step %s' %(j,k)) ## what step?
-        fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi
-        logging.info('num of fungi %s' %fun)
-    run_list.append(losced.datacollector.get_model_vars_dataframe())
+## normal simulation, no deforestation 
+    if args.deforest_type is None:
+        for k in range(args.steps):  ## number of steps before ending the model
+            losced.step() 
+            logging.info('run %s step %s' %(j,k)) ## what step?
+            fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi
+            logging.info('num of fungi %s' %fun)
+        run_list.append(losced.datacollector.get_model_vars_dataframe())
+
+    elif args.deforest_type is not None : 
+        for k in range(args.steps):  ## number of steps before ending the model
+            if losced.schedule.time in args.deforest_steps:
+                if args.deforest_type == 'thin' : losced.selthin(intensity=args.deforest_args[0])
+                elif args.deforest_type == 'fragment' : 
+                    losced.fragup(centers=int(args.deforest_args[0]), rad=args.deforest_args[1])
+            losced.step() 
+            logging.info('run %s step %s' %(j,k)) ## what step?
+            #fun=sum([ type(i)==Fungus for i in losced.schedule.agents ]) ## number of fungi
+            tre=sum([ type(i)==Tree for i in losced.schedule.agents ]) ## number of fungi
+            #logging.info('num of fungi %s' %fun)
+            logging.info('num of trees %s' %tre)
+        run_list.append(losced.datacollector.get_model_vars_dataframe())
+    else: print('wtf?')
 
 
 picklefile = fileout + ".p"
