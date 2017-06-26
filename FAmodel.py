@@ -238,6 +238,66 @@ class Forest (Model):
 
     ## add a condition to end model, if no fungi present?
 
+############### deforestation functions ###########
+
+## forest fragmentation:
+
+    def fragcenters(self,cens):
+    ## cens=number of forest fragments
+        centers=[]
+        for i in range(cens):
+            x=int(random.random()*self.width) ## self.width instead
+            y=int(random.random()*self.width) ## self.width instead
+            z=(x,y)
+            centers.append(z)
+        return(centers)
 
 
+    def onefrag(self, center, ags, rad=10):
+    ## center=center of fragment
+    ## ags = list of trees
+    ## rad = radius of fragment to be protected
+        survivors = []
+        for i in ags:
+            distf=((center[0]-i.pos[0])**2 + (center[1]-i.pos[1])**2)**(1/2)
+            if distf <= rad: survivors.append(i)
+        return(survivors)
 
+    def fragup(self, centers, rad):
+        ## 1 - get trees
+        alltrees = self.getall(Tree)
+        ## 2 - get centers
+        fcenters = self.fragcenters(centers)
+        ## 3 - designate survivors
+        remnants = []
+        for i in fcenters:
+            surv=self.onefrag(i, alltrees, rad)
+            remnants.extend(surv)
+        ## kill everything else
+        cuttrees = set(alltrees) - set(remnants)
+        for i in cuttrees: i.die()
+        ## maybe useful for plotting, return the objects
+        return({"alltrees":alltrees,
+                "centers":fcenters,
+                "remnants":remnants,
+                "cuttrees":cuttrees,
+                })
+
+## Selective thinning:
+
+    def selthin(self, intensity):
+        ## intensity should be in the form of a percentage
+        aa=self.getall(Tree)
+        if intensity > 1:
+                print("too intense!")
+                pass
+        else:
+            bb=random.sample(aa, int(len(aa)*intensity))
+        for i in bb: i.die() ## kill em
+    ## plot data:
+        return({"alltrees":aa,
+                "centers":None,
+                "remnants":self.getall(Tree),
+                "cuttrees":bb,
+                })
+ 
