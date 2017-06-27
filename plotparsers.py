@@ -27,8 +27,9 @@ def pldata(runs,lvl,steps=50):
         for i in runs[lvl]: ## for all the 100 sims from disp=j
             datime.append(i.Decomp_subs[j]) ## add this simulation's decomps total to the list
             eatime.append(i.Endo_subs[j]) ## add this simulation's endophyte total to the list
-            if i.Trees: 
+            if 'Trees' in i.columns:
                 trees.append(i.Trees[j]) ## add this simulation's endophyte total to the list
+            else: trees.append([0])
             inf_trees.append(i.Infected_trees[j]) ## add this simulation's endophyte total to the list
             despo.append(i.decompspor_count[j]) ## add this simulation's endophyte total to the list
             espo.append(i.endospor_count[j]) ## add this simulation's endophyte total to the list
@@ -39,10 +40,7 @@ def pldata(runs,lvl,steps=50):
         endo_means.append(np.mean(eatime))
         endo_stds.append(np.std(eatime))
 
-        if i.Trees: trees_means.append(np.mean(trees))
-        else: 
-            i.Trees=trees_means.append([0])
-            print('no trees?')
+        trees_means.append(np.mean(trees))
 
         inf_trees_means.append(np.mean(inf_trees))
         inf_trees_stds.append(np.std(inf_trees))
