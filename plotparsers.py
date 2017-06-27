@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def pldata(runs,lvl,sims=50):
+def pldata(runs,lvl,steps=50):
     decomp_means = []
     decomp_stds = []
     endo_means = []
@@ -16,7 +16,7 @@ def pldata(runs,lvl,sims=50):
     espo_means = []
     espo_stds = []
 
-    for j in range(sims): ## for all 50 time steps
+    for j in range(steps): ## for all 50 time steps
         datime = [] ## decomposer abundances for a particular timestep, all 100 runs
         eatime = [] ## endophyte abundances for a particular timestep, all 100 runs
         inf_trees = [] ## num of infected trees for a particular timestep, all 100 runs
@@ -98,7 +98,8 @@ def pldata(runs,lvl,sims=50):
 
 ## can we do the above, with a single level list of simulation dataframes?
 
-def pldata_single(runs,sims=50):
+def pldata_single(runs,steps=50):
+
     decomp_means = []
     decomp_stds = []
     endo_means = []
@@ -110,7 +111,7 @@ def pldata_single(runs,sims=50):
     espo_means = []
     espo_stds = []
 
-    for j in range(sims): ## for all 50 time steps
+    for j in range(steps): ## for all 50 time steps
         datime = [] ## decomposer abundances for a particular timestep, all 100 runs
         eatime = [] ## endophyte abundances for a particular timestep, all 100 runs
         inf_trees = [] ## num of infected trees for a particular timestep, all 100 runs
