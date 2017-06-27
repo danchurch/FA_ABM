@@ -9,6 +9,7 @@ def pldata(runs,lvl,steps=50):
     decomp_stds = []
     endo_means = []
     endo_stds = []
+    trees_means = []
     inf_trees_means = []
     inf_trees_stds = []
     despo_means = []
@@ -20,11 +21,14 @@ def pldata(runs,lvl,steps=50):
         datime = [] ## decomposer abundances for a particular timestep, all 100 runs
         eatime = [] ## endophyte abundances for a particular timestep, all 100 runs
         inf_trees = [] ## num of infected trees for a particular timestep, all 100 runs
+        trees = [] ## num of trees for a particular timestep, all 100 runs
         despo = [] ## num of infected trees for a particular timestep, all 100 runs
         espo = [] ## num of infected trees for a particular timestep, all 100 runs
         for i in runs[lvl]: ## for all the 100 sims from disp=j
             datime.append(i.Decomp_subs[j]) ## add this simulation's decomps total to the list
             eatime.append(i.Endo_subs[j]) ## add this simulation's endophyte total to the list
+            if i.Trees: 
+                trees.append(i.Trees[j]) ## add this simulation's endophyte total to the list
             inf_trees.append(i.Infected_trees[j]) ## add this simulation's endophyte total to the list
             despo.append(i.decompspor_count[j]) ## add this simulation's endophyte total to the list
             espo.append(i.endospor_count[j]) ## add this simulation's endophyte total to the list
@@ -34,6 +38,11 @@ def pldata(runs,lvl,steps=50):
 
         endo_means.append(np.mean(eatime))
         endo_stds.append(np.std(eatime))
+
+        if i.Trees: trees_means.append(np.mean(trees))
+        else: 
+            i.Trees=trees_means.append([0])
+            print('no trees?')
 
         inf_trees_means.append(np.mean(inf_trees))
         inf_trees_stds.append(np.std(inf_trees))
@@ -81,6 +90,8 @@ def pldata(runs,lvl,steps=50):
                 'endo_means':endo_means,
                 'endo_updev':endo_updev,
                 'endo_downdev':endo_downdev,
+
+                'trees_means':trees_means,
 
                 'inf_trees_means':inf_trees_means,
                 'inf_trees_updev':inf_trees_updev,
@@ -104,6 +115,7 @@ def pldata_single(runs,steps=50):
     decomp_stds = []
     endo_means = []
     endo_stds = []
+    trees_means = []
     inf_trees_means = []
     inf_trees_stds = []
     despo_means = []
@@ -114,12 +126,16 @@ def pldata_single(runs,steps=50):
     for j in range(steps): ## for all 50 time steps
         datime = [] ## decomposer abundances for a particular timestep, all 100 runs
         eatime = [] ## endophyte abundances for a particular timestep, all 100 runs
+        trees = [] ## num of trees for a particular timestep, all 100 runs
         inf_trees = [] ## num of infected trees for a particular timestep, all 100 runs
         despo = [] ## num of infected trees for a particular timestep, all 100 runs
         espo = [] ## num of infected trees for a particular timestep, all 100 runs
         for i in runs: ## for all the 100 sims from disp=j
             datime.append(i.Decomp_subs[j]) ## add this simulation's decomps total to the list
             eatime.append(i.Endo_subs[j]) ## add this simulation's endophyte total to the list
+            if 'Trees' in i.columns:
+                trees.append(i.Trees[j]) ## add this simulation's endophyte total to the list
+            else: trees.append(0)
             inf_trees.append(i.Infected_trees[j]) ## add this simulation's endophyte total to the list
             despo.append(i.decompspor_count[j]) ## add this simulation's endophyte total to the list
             espo.append(i.endospor_count[j]) ## add this simulation's endophyte total to the list
@@ -129,6 +145,8 @@ def pldata_single(runs,steps=50):
 
         endo_means.append(np.mean(eatime))
         endo_stds.append(np.std(eatime))
+
+        trees_means.append(np.mean(trees))
 
         inf_trees_means.append(np.mean(inf_trees))
         inf_trees_stds.append(np.std(inf_trees))
@@ -176,7 +194,7 @@ def pldata_single(runs,steps=50):
                 'endo_means':endo_means,
                 'endo_updev':endo_updev,
                 'endo_downdev':endo_downdev,
-
+                'trees_means':trees_means,
                 'inf_trees_means':inf_trees_means,
                 'inf_trees_updev':inf_trees_updev,
                 'inf_trees_downdev':inf_trees_downdev,

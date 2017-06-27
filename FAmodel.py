@@ -56,6 +56,10 @@ def Decomp_subs(model):
 def bluetrees(model): 
     return(len([ i for i in model.schedule.agents if type(i)==Tree and i.infection==True ]))
 
+## track the number of trees at every step:
+def tracktrees(model): 
+    return(len([ i for i in model.schedule.agents if type(i)==Tree ]))
+
 ## track the sporulations of EC- fungi:
 
 def decompspor_count(model):
@@ -114,6 +118,7 @@ class Forest (Model):
                 "Infected_trees": bluetrees,
                 "decompspor_count": decompspor_count,
                 "endospor_count": endospor_count,
+                "Trees": tracktrees,
                 })
 
         ## make initial agents:
