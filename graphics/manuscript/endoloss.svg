@@ -18,8 +18,8 @@
    inkscape:version="0.91 r13725"
    sodipodi:docname="endoloss.svg"
    inkscape:export-filename="/home/daniel/Documents/ABM/FA/graphics/manuscript/endoloss.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-xdpi="136.3"
+   inkscape:export-ydpi="136.3">
   <metadata
      id="metadata1367">
     <rdf:RDF>
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,15 +41,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1215"
-     inkscape:window-height="1000"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
      id="namedview1365"
      showgrid="false"
      showborder="false"
      inkscape:zoom="0.74167645"
-     inkscape:cx="546.25"
+     inkscape:cx="502.93231"
      inkscape:cy="450"
-     inkscape:window-x="65"
+     inkscape:window-x="1345"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
@@ -61,6 +61,13 @@
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
   </defs>
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.92400002;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="rect4712"
+     width="693.56384"
+     height="264.26617"
+     x="45.970924"
+     y="239.08597" />
   <g
      id="g7738">
     <g
