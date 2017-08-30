@@ -501,12 +501,14 @@
            x="-922.26929"
            y="-562.87177" /></flowRegion><flowPara
          id="flowPara16341" /></flowRoot>    <rect
-       style="fill:#ffffbd;fill-opacity:1;stroke:none;stroke-width:0.92400002;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.92400002;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect4576"
        width="862.67023"
        height="1280.8734"
        x="-2707.2087"
-       y="-64.866501" />
+       y="-64.866501"
+       inkscape:export-xdpi="106.44785"
+       inkscape:export-ydpi="106.44785" />
     <g
        id="g9227"
        transform="translate(98,-5.71429)">

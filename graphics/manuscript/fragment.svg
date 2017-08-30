@@ -23,14 +23,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
+     inkscape:zoom="0.175"
      inkscape:cx="193.67256"
      inkscape:cy="432.79225"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1215"
-     inkscape:window-height="1000"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -467,6 +467,15 @@
          x="-87.007599"
          y="1080.6267"
          style="font-size:17.5px" /></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.92400002;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5076"
+       width="1908.5713"
+       height="1348.5714"
+       x="-891.42859"
+       y="-107.63779"
+       inkscape:export-xdpi="115.3"
+       inkscape:export-ydpi="115.3" />
     <g
        id="g28236"
        transform="translate(-3.3801497,0)">
