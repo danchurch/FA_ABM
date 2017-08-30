@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="sporulation.svg"
-   inkscape:export-filename="/home/daniel/Documents/ABM/FA/graphics/sporulation.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/home/daniel/Documents/ABM/FA/graphics/manuscript/sporulation.png"
+   inkscape:export-xdpi="106.44785"
+   inkscape:export-ydpi="106.44785">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,15 +26,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="-2021.3448"
-     inkscape:cy="660.16421"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="-2027.7634"
+     inkscape:cy="492.79666"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="false"
-     inkscape:window-width="1215"
-     inkscape:window-height="1000"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -500,11 +500,13 @@
            height="29.294424"
            x="-922.26929"
            y="-562.87177" /></flowRegion><flowPara
-         id="flowPara16341" /></flowRoot>    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4676)"
-       d="M 8.7874353,209.06844 10.216035,7.6398628"
-       id="path3790"
-       inkscape:connector-curvature="0" />
+         id="flowPara16341" /></flowRoot>    <rect
+       style="fill:#ffffbd;fill-opacity:1;stroke:none;stroke-width:0.92400002;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4576"
+       width="862.67023"
+       height="1280.8734"
+       x="-2707.2087"
+       y="-64.866501" />
     <g
        id="g9227"
        transform="translate(98,-5.71429)">
@@ -1081,7 +1083,8 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="g9104">
+       id="g9104"
+       transform="translate(-832.14457,620)">
       <g
          transform="translate(-123.37497,3.9216659)"
          id="g16586">
@@ -1547,7 +1550,8 @@
       <path
          id="path7486"
          d="m -1669.3078,336.33982 c -48.4762,-21.81458 -80.3973,-58.98634 -80.3973,-101.17513 0,-45.75932 37.5528,-85.61647 93.0516,-106.37752"
-         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7649)" />
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker7649)"
+         inkscape:connector-curvature="0" />
       <path
          id="path7486-9"
          d="m -1564.124,339.23959 c 48.4762,-21.81458 80.3973,-58.98634 80.3973,-101.17513 0,-45.75932 -37.5528,-85.61647 -93.0516,-106.37753"
@@ -1643,5 +1647,5 @@
            height="75.714287"
            x="-1898.5714"
            y="189.50507" /></flowRegion><flowPara
-         id="flowPara9048"></flowPara></flowRoot>  </g>
+         id="flowPara9048" /></flowRoot>  </g>
 </svg>
