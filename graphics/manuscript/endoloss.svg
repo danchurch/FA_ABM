@@ -10,10 +10,10 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="720pt"
+   height="268.26617pt"
    version="1.1"
-   viewBox="0 0 874 720"
-   width="874pt"
+   viewBox="0 0 697.56384 268.26617"
+   width="697.56384pt"
    id="svg2"
    inkscape:version="0.91 r13725"
    sodipodi:docname="endoloss.svg"
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,20 +41,26 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1301"
-     inkscape:window-height="744"
+     inkscape:window-width="1215"
+     inkscape:window-height="1000"
      id="namedview1365"
      showgrid="false"
-     showborder="false"
+     showborder="true"
      inkscape:zoom="0.74167645"
-     inkscape:cx="502.93231"
-     inkscape:cy="450"
-     inkscape:window-x="1345"
+     inkscape:cx="464.13643"
+     inkscape:cy="181.69018"
+     inkscape:window-x="1431"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
+     inkscape:current-layer="svg2"
+     borderlayer="true"
+     fit-margin-top="2"
+     fit-margin-right="2"
+     fit-margin-bottom="2"
+     fit-margin-left="2" />
   <defs
-     id="defs4">
+     id="defs4"
+     style="stroke-linecap:butt;stroke-linejoin:round">
     <style
        type="text/css"
        id="style6">
@@ -66,12 +72,15 @@
      id="rect4712"
      width="693.56384"
      height="264.26617"
-     x="45.970924"
-     y="239.08597" />
+     x="2"
+     y="2" />
   <g
-     id="g7738">
+     id="g7738"
+     style="stroke-linecap:butt;stroke-linejoin:round"
+     transform="translate(-43.970924,-237.08597)">
     <g
-       id="g7464">
+       id="g7464"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <g
          id="patch_2"
          style="stroke-linecap:butt;stroke-linejoin:round">
@@ -3380,31 +3389,37 @@
   <defs
      id="defs1354">
     <clipPath
-       id="p37b4cca124">
+       id="p37b4cca124"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
-         height="184.974899"
-         width="199.402941"
+         height="184.9749"
+         width="199.40294"
          x="109.35"
          y="271.11255"
-         id="rect1357" />
+         id="rect1357"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="p865178be9e">
+       id="p865178be9e"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
-         height="184.974899"
-         width="199.402941"
-         x="348.633529"
+         height="184.9749"
+         width="199.40294"
+         x="348.63351"
          y="271.11255"
-         id="rect1360" />
+         id="rect1360"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="pb169a51af6">
+       id="pb169a51af6"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
-         height="184.974899"
-         width="199.402941"
-         x="587.917059"
+         height="184.9749"
+         width="199.40294"
+         x="587.91705"
          y="271.11255"
-         id="rect1363" />
+         id="rect1363"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
   </defs>
 </svg>

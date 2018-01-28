@@ -10,10 +10,10 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="535pt"
+   height="1018.5236pt"
    version="1.1"
-   viewBox="0 0 936 535"
-   width="936pt"
+   viewBox="0 0 855.19458 1018.5236"
+   width="855.19458pt"
    id="svg2"
    inkscape:version="0.91 r13725"
    sodipodi:docname="wooddepo_decomp_both.svg"
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,79 +41,96 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1215"
-     inkscape:window-height="1000"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
      id="namedview618"
      showgrid="false"
-     inkscape:zoom="0.5094017"
-     inkscape:cx="1522.4697"
-     inkscape:cy="555.01823"
-     inkscape:window-x="1431"
-     inkscape:window-y="24"
+     inkscape:zoom="0.3602014"
+     inkscape:cx="88.971356"
+     inkscape:cy="581.0754"
+     inkscape:window-x="65"
+     inkscape:window-y="280"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2"
-     showborder="false"
-     showguides="false" />
+     showborder="true"
+     showguides="false"
+     fit-margin-top="2"
+     fit-margin-right="2"
+     fit-margin-bottom="2"
+     fit-margin-left="2" />
   <defs
-     id="defs4">
+     id="defs4"
+     style="stroke-linecap:butt;stroke-linejoin:round">
     <style
        type="text/css"
        id="style6">
 *{stroke-linecap:butt;stroke-linejoin:round;}
   </style>
     <clipPath
-       id="pead93c2286">
+       id="pead93c2286"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5766" />
+         id="rect5766"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="clipPath5782">
+       id="clipPath5782"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5784" />
+         id="rect5784"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="clipPath5786">
+       id="clipPath5786"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5788" />
+         id="rect5788"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="clipPath5790">
+       id="clipPath5790"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5792" />
+         id="rect5792"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="clipPath5794">
+       id="clipPath5794"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5796" />
+         id="rect5796"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <clipPath
-       id="clipPath5798">
+       id="clipPath5798"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
          width="725.95801"
          x="117.09"
          y="64.281601"
-         id="rect5800" />
+         id="rect5800"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
     <defs
        id="defs5226">
@@ -169,11 +186,11 @@
      id="rect5774"
      width="851.19458"
      height="1014.5236"
-     x="881.03357"
-     y="-460.67789" />
+     x="2"
+     y="2" />
   <g
      id="g11475"
-     transform="translate(841.97508,-478.80278)"
+     transform="translate(-37.058489,-16.124893)"
      style="stroke-linecap:butt;stroke-linejoin:round">
     <g
        id="axes_1"
@@ -2419,42 +2436,44 @@
   <defs
      id="defs613">
     <clipPath
-       id="p2d82a6048d">
+       id="p2d82a6048d"
+       style="stroke-linecap:butt;stroke-linejoin:round">
       <rect
          height="412.4736"
-         width="725.958"
+         width="725.95801"
          x="117.09"
-         y="64.2816"
-         id="rect616" />
+         y="64.281601"
+         id="rect616"
+         style="stroke-linecap:butt;stroke-linejoin:round" />
     </clipPath>
   </defs>
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_20-6"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_22-4"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_24-1"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_26"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_28"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      style="stroke-linecap:butt;stroke-linejoin:round"
      id="line2d_30"
-     transform="translate(833.35321,-10.832304)" />
+     transform="translate(-45.680359,451.84558)" />
   <g
      id="g5411"
-     transform="translate(8.62187,36.8)"
+     transform="translate(-870.4117,499.47789)"
      style="stroke-linecap:butt;stroke-linejoin:round">
     <path
        inkscape:connector-curvature="0"
