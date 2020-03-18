@@ -1,0 +1,127 @@
+## let's add some parameter sweeps, as per reviewer request
+
+## reviewer 2 request that we tinker with the tuning parameters
+
+## the parameters that were not swept in our original efforts are:
+
+## parameters available to explore are:
+
+endophytism
+ws
+endodisp
+decompdisp
+leafdisp
+leaffall
+numdecomp
+numendo
+endoloss
+newwood
+woodfreq
+width
+kappa
+sigma
+mu
+nuke
+
+## nuke is not really a parameter of interest
+## neither is width
+## the ones that are already explored in the notebooks are:
+endophytism
+ws
+endodisp
+decompdisp
+endoloss
+newwood
+
+
+## so we need to explore
+leafdisp
+leaffall
+numdecomp
+numendo
+woodfreq
+width
+kappa
+sigma
+mu
+
+## so just work through these, one-by-one
+## start by playing with leafdisp
+
+## how do we do a graphical run again?
+
+## our runs usually went under this script, which I think I 
+## just kept modifying for each new use I wanted to peek at.
+
+python3 ./forestrun.py
+
+## had to update some syntax, but seems to work okay. So what are our settings 
+## for sweeping leafdisp? And where are these kept?
+
+## all kept in FAmodel.py. Defaults are update with notebook.
+
+## if we want to run using these defaults:
+
+python3 runFA.py -sims 1
+
+python3 runFA.py -sims 3 -steps 3
+
+## how can we save and graph the results?
+
+python3
+import pickle
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+runs = pd.read_pickle('run.2020-03-18_15.28.58.317963.p')
+
+runs = pd.read_pickle('run.2020-03-18_15.43.02.290763.p')
+
+## this is a list of dataframes:
+runs[0].head(5)
+
+runs[0]
+
+lvls = sorted(list(runs.keys()))
+
+## we made a function to process these lists of dataframes a bit:
+
+import plotparsers as pr
+
+pr.pldata(runs[0],lvl=3)
+
+pr.pldata_single(runs[0])
+
+pr.pldata()
+
+## not working. What's different? Let's look at one of our old results...
+
+aa = pd.read_pickle('sweeps/results/onefungusdisp/onefungusdisp.p')
+
+type(aa[1])
+
+len(aa[1])
+
+## ah. each level of the parameter that is being swept has its own key.
+## 
+
+aa[1][0]
+
+## the value that is contained for each key is a list. The length of 
+## the list is determined by how many simulations were done, usually
+## 100. 
+
+## Each element of that list is a dataframe with a row for each time
+## step, usually fifty. 
+
+## so for us, we need to run 100 simulations, 50 time steps each, 
+## for each parameter of interest. We can set up one and see how 
+## long it takes...seems precarious to run from ssh.
+
+## we can try...
+
+ssh danthomas@10.4.2.6 "ls -la"
+
+
