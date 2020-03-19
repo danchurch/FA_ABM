@@ -158,6 +158,89 @@ ssh danthomas@10.4.2.6 sh "/Users/danthomas/Documents/FA_ABM/testScript.sh"
 ## how to code that? Mesa has a builtin batch job script, but I think 
 ## our custon runFA.py is probably up for the job, too:
 
-## in our other sweeps, this 
+## in our other sweeps, we did 100 simulation runs, 50 steps each
+
+## looks like the lab mac has 4 logical cores, so we can safely send 
+## it 3 jobs?
+
+## so maybe 3 bash scripts that runs through 3 levels each (0,1,2), 
+## (3,4,5) and (6,7,8)?
+
+## so...
+
+
+#########################################
+#!/usr/bin/env bash
+
+cd /Users/danthomas/Documents/FA_ABM
+
+for i in {0..2}
+do 
+echo $i
+/usr/local/bin/python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -endodisp 3.0 \
+    -leafdisp $i \
+    -fileout "leafdisp"$i 
+done 
+
+#########################################
+
+## try it:
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp0-2.sh"
+
+## seems to be working... what happens if we give it another to chew on?
+
+########################################
+
+#!/usr/bin/env bash
+
+cd /Users/danthomas/Documents/FA_ABM
+
+for i in {3..5}
+do 
+/usr/local/bin/python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -endodisp 3.0 \
+    -leafdisp $i \
+    -fileout "leafdisp"$i 
+done 
+
+########################################
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp3-5.sh"
+
+## seems to work... so setup the last installment, cross fingers, go to bed. 
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp6-8.sh"
+
+## tomorrow - remember to clean up git, pull/push everything. 
+## oh, wait. Didn't work. The loop breaks if I close my shell on this side. 
+## fuck. Why is it so hard to do this? 
+
+## I guess I can leave my computer on...
+
+## what is left, then? edit the scripts to exclude what's already done...
+
+## can't stay up so let's just pile it on and hope we don't freeze up the computer:
+
+#ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp0-2.sh"
+#ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp3-5.sh"
+#ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leafdisp6-8.sh"
+
+## that last run failed. redo?
+
+python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -endodisp 3.0 \
+    -leafdisp 8.0 \
+    -fileout "leafdisp8" 
+
+## otherwise, worked well, I think. Can we make a graphic out of one of these, 
+## and make sure?
 
 
