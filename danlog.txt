@@ -124,4 +124,23 @@ aa[1][0]
 
 ssh danthomas@10.4.2.6 "ls -la"
 
+python3 runFA.py -sims 3 -steps 3
 
+ssh danthomas@10.4.2.6 "python3 /Users/danthomas/Documents/FA_ABM/runFA.py -sims 1 -steps 1"
+
+## nope. what about a shell script?
+
+############################################################
+
+#!/usr/bin/env sh
+
+cd /Users/danthomas/Documents/FA_ABM
+/usr/local/bin/python3 /Users/danthomas/Documents/FA_ABM/runFA.py -sims 1 -steps 1
+
+############################################################
+
+## from home:
+
+ssh danthomas@10.4.2.6 sh "/Users/danthomas/Documents/FA_ABM/testScript.sh"
+
+## works.

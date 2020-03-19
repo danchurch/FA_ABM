@@ -1,0 +1,6 @@
+INFO:root:None
+INFO:root:usersets Namespace(decompdisp=None, deforest_args=None, deforest_steps=None, deforest_type=None, endodisp=None, endoloss=None, endophytism=True, fileout=None, kappa=None, leafdisp=None, leaffall=None, mu=None, newwood=None, numdecomp=None, numendo=None, sigma=None, sims=1, steps=1, width=None, woodfreq=None, ws=None)
+INFO:root:start 17:25:59.073862
+INFO:root:run 0 step 0
+INFO:root:num of fungi 9
+INFO:root:finish 17:26:00.606412
