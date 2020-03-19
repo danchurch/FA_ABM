@@ -144,3 +144,20 @@ cd /Users/danthomas/Documents/FA_ABM
 ssh danthomas@10.4.2.6 sh "/Users/danthomas/Documents/FA_ABM/testScript.sh"
 
 ## works.
+
+## we want to sweep through a set of values....
+
+## to explore leafdisp, what makes sense? I think it makes sense to 
+## do as was done with the endophyte loss sweep - give the endophytes
+## a slight advantage, and see what it takes to erode or maintain that
+## advantage. 
+
+## leaf dispersal is set at a default of 4. We can sweep from 0 to 8, seems
+## reasonable. 
+
+## how to code that? Mesa has a builtin batch job script, but I think 
+## our custon runFA.py is probably up for the job, too:
+
+## in our other sweeps, this 
+
+
