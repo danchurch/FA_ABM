@@ -243,4 +243,121 @@ python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
 ## otherwise, worked well, I think. Can we make a graphic out of one of these, 
 ## and make sure?
 
+ls /home/daniel/Documents/submissions/FAabm/FA_ABM/sweeps/results/leafdisp
+## we have all but one run done... let's 
 
+python3
+import pickle
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import plotparsers as pr
+plt.ion()
+
+os.chdir("/home/daniel/Documents/submissions/FAabm/FA_ABM/sweeps/results/leafdisp")
+
+## how can we combine all of these files into a dictionary with levels as keys?
+
+## for the next round of simulations, let's put an easy way to divide up the 
+## strings. For this one, I guess we may have to do this manually. We want 
+## a dataframe for each run, a list of runs for each level, and a dictionary 
+## of all the lists as values, with their level as the key
+
+levels = []
+for i in os.listdir():
+    if ".p" in i: 
+        print (i)
+        i=i.split('2020')[0].split('leafdisp')[1]
+        i=int(i)
+        print(i)
+        levels.append(i)
+
+levels.sort()
+## looks like we have doubles of 4, 5, 7
+
+levels = list(set(levels))
+
+## check logs...all of these completed to 100 sims, might as well use the 
+## extra data
+
+## combine the doubles if we have them
+
+aa = pd.read_pickle("leafdisp42020-03-18_23.24.26.009182.p")
+bb = pd.read_pickle("leafdisp42020-03-18_23.31.24.077112.p")
+aa.extend(bb)
+
+## now write it back out?
+
+pickle.dump(aa, open('leafdisp42020-combined.p', 'wb'))
+
+aa = pd.read_pickle('leafdisp42020-combined.p') ## works
+
+## repeat this with 5 and 7:
+aa = pd.read_pickle("leafdisp52020-03-19_00.24.35.275498.p")
+bb = pd.read_pickle("leafdisp52020-03-19_00.39.06.402233.p")
+aa.extend(bb)
+pickle.dump(aa, open('leafdisp52020-combined.p', 'wb'))
+
+aa = pd.read_pickle("leafdisp72020-03-18_23.25.23.043032.p")
+bb = pd.read_pickle("leafdisp72020-03-19_00.12.20.460393.p")
+aa.extend(bb)
+pickle.dump(aa, open('leafdisp72020-combined.p', 'wb'))
+
+
+## so can we fill a dictionary while reading in the files?
+
+leafDispDic = {}
+
+
+levels = []
+for i in os.listdir():
+    if ".p" in i: 
+        filename = i
+        i=i.split('2020')[0].split('leafdisp')[1]
+        i=int(i)
+        print(i)
+        print(filename)
+        leafDispDic[i] = pd.read_pickle(filename)
+
+## did that work? looks like it:
+
+leafDispDic.keys()
+
+type(leafDispDic[6])
+
+len(leafDispDic[8])
+
+runs = leafDispDic
+
+## can we now use our plotter functions?
+
+lvls = sorted(list(runs.keys())) ## lvls of the run, from large to small
+
+runplotdata = {}
+for i in lvls:
+    runplotdata[i] = pr.pldata(runs, i) 
+
+x = list(range(50))
+
+fig, axes = plt.subplots(3,3, figsize=(25, 40)) ## set figure, nrows and ncols, sizes
+
+for i,z in enumerate(axes.flatten()): ## unroll our array of subplots, deal with them 1-by-1
+    z.set_ylim(0,50) ## yaxis
+    ## plot fungus:
+    z.plot(x, runplotdata[lvls[i]]['decomp_means'],
+            '-',
+           c='black',
+            label=('d=%s' %lvls[i]),
+            )
+    ## error fill
+    z.fill_between(x, runplotdata[lvls[i]]['decomp_updev'],
+                    runplotdata[lvls[i]]['decomp_downdev'],
+                    linewidth=0,
+                    facecolor='black',
+                    alpha = 0.3,
+                    )
+    handles, labels = z.get_legend_handles_labels()
+    z.legend(handles, labels, prop={'size':20})
+    z.set_ylabel("Substrates occupied")
+    z.set_xlabel("Timestep")
