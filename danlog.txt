@@ -307,9 +307,8 @@ pickle.dump(aa, open('leafdisp72020-combined.p', 'wb'))
 
 ## so can we fill a dictionary while reading in the files?
 
+os.chdir("/home/daniel/Documents/submissions/FAabm/FA_ABM/sweeps/results/leafdisp")
 leafDispDic = {}
-
-
 levels = []
 for i in os.listdir():
     if ".p" in i: 
@@ -403,12 +402,12 @@ ax.fill_between(x, runplotdata[lvls[0]]['endo_updev'],
 ## make a function:
 
 
-def plotComp(ax, runs, level):
+def plotComp(ax, runs, level, titletextsize=20, legendtextsize=20):
     ax.set_ylim(0,50)
     ax.plot(x, runs[level]['decomp_means'],
             '-',
            c='black',
-            label=('d=%s' %runs[level]),
+            label=('d=%s' %level),
                 )
     ax.fill_between(x, runs[level]['decomp_updev'],
                     runs[level]['decomp_downdev'],
@@ -419,7 +418,7 @@ def plotComp(ax, runs, level):
     ax.plot(x, runs[level]['endo_means'],
             '-',
            c='black',
-            label=('d=%s' %runs[level]),
+            label=('d=%s' %level),
                 )
     ax.fill_between(x, runs[level]['endo_updev'],
                     runs[level]['endo_downdev'],
@@ -427,7 +426,11 @@ def plotComp(ax, runs, level):
                     facecolor='blue',
                     alpha = 0.3,
                     )
-
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles, labels, prop={'size':legendtextsize})
+    ax.set_ylabel("Substrates occupied")
+    ax.set_xlabel("Timestep")
+    ax.set_title('disp=%s' %level, {'fontsize':titletextsize})
 
 fig,axes = plt.subplots(3,3, 
     figsize=(25, 40), 
@@ -435,10 +438,11 @@ fig,axes = plt.subplots(3,3,
     sharey=True
     )
 
-#plotComp(axes.flatten()[0], runplotdata, 0)
 
 for i in runplotdata.keys():
-    plotComp(axes.flatten()[i], runplotdata, i)
+    aa=plotComp(axes.flatten()[i], runplotdata, i)
+
+plt.tight_layout()
 
 ## well, that's cool. The function, not the results.
 ## results are pretty much expected. 
@@ -505,7 +509,15 @@ python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
 ## tomorrow - incorporate the leafdisp=8 into the 
 ## leafdisp sweep
 
-## look at leaffall result, probably change leafdisp
-## back to default instead of 6?
+## look at leaffall result, if it makes sense, 
+## "sweep" two other settings at leaffal=4 - leafdisp={4,5}
 
-## 
+## if results look good from all available drafts, 
+## set up remaining sweeps?: 
+numdecomp
+numendo
+woodfreq
+width
+kappa
+sigma
+mu
