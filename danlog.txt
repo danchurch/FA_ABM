@@ -338,8 +338,9 @@ runplotdata = {}
 for i in lvls:
     runplotdata[i] = pr.pldata(runs, i) 
 
-x = list(range(50))
+## the boilerplate is:
 
+x = list(range(50))
 fig, axes = plt.subplots(3,3, figsize=(25, 40)) ## set figure, nrows and ncols, sizes
 
 for i,z in enumerate(axes.flatten()): ## unroll our array of subplots, deal with them 1-by-1
@@ -361,3 +362,150 @@ for i,z in enumerate(axes.flatten()): ## unroll our array of subplots, deal with
     z.legend(handles, labels, prop={'size':20})
     z.set_ylabel("Substrates occupied")
     z.set_xlabel("Timestep")
+
+
+#############
+
+## but not working. Try one at a time:
+
+fig, ax = plt.subplots(1,1, figsize=(25, 40)) ## set figure, nrows and ncols, sizes
+
+ax.set_ylim(0,50) ## yaxis
+
+ax.plot(x, runplotdata[lvls[0]]['decomp_means'],
+        '-',
+       c='black',
+        label=('d=%s' %lvls[0]),
+            )
+
+  ## error fill
+ax.fill_between(x, runplotdata[lvls[0]]['decomp_updev'],
+                runplotdata[lvls[0]]['decomp_downdev'],
+                linewidth=0,
+                facecolor='red',
+                alpha = 0.3,
+                )
+
+ax.plot(x, runplotdata[lvls[0]]['endo_means'],
+        '-',
+       c='black',
+        label=('d=%s' %lvls[0]),
+            )
+  ## error fill
+ax.fill_between(x, runplotdata[lvls[0]]['endo_updev'],
+                runplotdata[lvls[0]]['endo_downdev'],
+                linewidth=0,
+                facecolor='blue',
+                alpha = 0.3,
+                )
+
+
+## make a function:
+
+
+def plotComp(ax, runs, level):
+    ax.set_ylim(0,50)
+    ax.plot(x, runs[level]['decomp_means'],
+            '-',
+           c='black',
+            label=('d=%s' %runs[level]),
+                )
+    ax.fill_between(x, runs[level]['decomp_updev'],
+                    runs[level]['decomp_downdev'],
+                    linewidth=0,
+                    facecolor='red',
+                    alpha = 0.3,
+                    )
+    ax.plot(x, runs[level]['endo_means'],
+            '-',
+           c='black',
+            label=('d=%s' %runs[level]),
+                )
+    ax.fill_between(x, runs[level]['endo_updev'],
+                    runs[level]['endo_downdev'],
+                    linewidth=0,
+                    facecolor='blue',
+                    alpha = 0.3,
+                    )
+
+
+fig,axes = plt.subplots(3,3, 
+    figsize=(25, 40), 
+    sharex=True, 
+    sharey=True
+    )
+
+#plotComp(axes.flatten()[0], runplotdata, 0)
+
+for i in runplotdata.keys():
+    plotComp(axes.flatten()[i], runplotdata, i)
+
+## well, that's cool. The function, not the results.
+## results are pretty much expected. 
+
+
+#######################
+
+## let's set up another sweep
+
+## let's compare what happens with a more 
+## seasonal system, where leaf fall
+## occurs in a single "autumn" time
+## step. 
+
+## what would this look like? 
+
+## 100 sims of the default and ...
+## 100 sims of leaffall = 4?
+
+## actually, we need to review the code a little...confirm
+## that leaffall works how we think it does...
+
+## yes. if leaffall = 4, then on timesteps that are
+## multiples of 4, leaf drop occurs. So leaffall
+## is the number of days between leaf fall, and 
+## leaffall=4 is equivalent to one season per year of 
+## leaf drop.
+
+## but we also want to beef up leaf dispersal a bit, 
+## because during leaf fall at this time, many more
+## leaves fall, increasing the chance of incoulation
+## via leaf, say to d=6
+
+## I think this would look like:
+
+python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -leaffall 4
+    -leafdisp 6
+    -fileout "leaffall4__"
+
+## we'll also run a default model settings, see if we 
+## are repeating the results we first got from the 
+## model. In defaults, leafdisp is d=4.0, and leaffall
+## is 1
+
+python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -fileout "leaffall1__"
+
+## put this into a script and...
+
+#ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leaffall4.sh"
+## PID 75418
+
+############################################
+
+
+
+############################################
+
+## tomorrow - incorporate the leafdisp=8 into the 
+## leafdisp sweep
+
+## look at leaffall result, probably change leafdisp
+## back to default instead of 6?
+
+## 
