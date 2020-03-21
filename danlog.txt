@@ -327,87 +327,24 @@ type(leafDispDic[6])
 
 len(leafDispDic[8])
 
-runs = leafDispDic
 
 ## can we now use our plotter functions?
 
+runs = leafDispDic
 lvls = sorted(list(runs.keys())) ## lvls of the run, from large to small
 
 runplotdata = {}
 for i in lvls:
     runplotdata[i] = pr.pldata(runs, i) 
 
-## the boilerplate is:
+## make a plotting function:
 
-x = list(range(50))
-fig, axes = plt.subplots(3,3, figsize=(25, 40)) ## set figure, nrows and ncols, sizes
-
-for i,z in enumerate(axes.flatten()): ## unroll our array of subplots, deal with them 1-by-1
-    z.set_ylim(0,50) ## yaxis
-    ## plot fungus:
-    z.plot(x, runplotdata[lvls[i]]['decomp_means'],
-            '-',
-           c='black',
-            label=('d=%s' %lvls[i]),
-            )
-    ## error fill
-    z.fill_between(x, runplotdata[lvls[i]]['decomp_updev'],
-                    runplotdata[lvls[i]]['decomp_downdev'],
-                    linewidth=0,
-                    facecolor='black',
-                    alpha = 0.3,
-                    )
-    handles, labels = z.get_legend_handles_labels()
-    z.legend(handles, labels, prop={'size':20})
-    z.set_ylabel("Substrates occupied")
-    z.set_xlabel("Timestep")
-
-
-#############
-
-## but not working. Try one at a time:
-
-fig, ax = plt.subplots(1,1, figsize=(25, 40)) ## set figure, nrows and ncols, sizes
-
-ax.set_ylim(0,50) ## yaxis
-
-ax.plot(x, runplotdata[lvls[0]]['decomp_means'],
-        '-',
-       c='black',
-        label=('d=%s' %lvls[0]),
-            )
-
-  ## error fill
-ax.fill_between(x, runplotdata[lvls[0]]['decomp_updev'],
-                runplotdata[lvls[0]]['decomp_downdev'],
-                linewidth=0,
-                facecolor='red',
-                alpha = 0.3,
-                )
-
-ax.plot(x, runplotdata[lvls[0]]['endo_means'],
-        '-',
-       c='black',
-        label=('d=%s' %lvls[0]),
-            )
-  ## error fill
-ax.fill_between(x, runplotdata[lvls[0]]['endo_updev'],
-                runplotdata[lvls[0]]['endo_downdev'],
-                linewidth=0,
-                facecolor='blue',
-                alpha = 0.3,
-                )
-
-
-## make a function:
-
-
-def plotComp(ax, runs, level, titletextsize=20, legendtextsize=20):
+def plotComp(ax, runs, level, title=None, titletextsize=20, legendtextsize=20):
     ax.set_ylim(0,50)
     ax.plot(x, runs[level]['decomp_means'],
             '-',
-           c='black',
-            label=('d=%s' %level),
+           c='red',
+            label=('decomposer'),
                 )
     ax.fill_between(x, runs[level]['decomp_updev'],
                     runs[level]['decomp_downdev'],
@@ -417,8 +354,8 @@ def plotComp(ax, runs, level, titletextsize=20, legendtextsize=20):
                     )
     ax.plot(x, runs[level]['endo_means'],
             '-',
-           c='black',
-            label=('d=%s' %level),
+           c='blue',
+            label=('endophyte'),
                 )
     ax.fill_between(x, runs[level]['endo_updev'],
                     runs[level]['endo_downdev'],
@@ -430,7 +367,7 @@ def plotComp(ax, runs, level, titletextsize=20, legendtextsize=20):
     ax.legend(handles, labels, prop={'size':legendtextsize})
     ax.set_ylabel("Substrates occupied")
     ax.set_xlabel("Timestep")
-    ax.set_title('disp=%s' %level, {'fontsize':titletextsize})
+    ax.set_title('{}={}'.format(title,level), {'fontsize':titletextsize})
 
 fig,axes = plt.subplots(3,3, 
     figsize=(25, 40), 
@@ -438,9 +375,8 @@ fig,axes = plt.subplots(3,3,
     sharey=True
     )
 
-
 for i in runplotdata.keys():
-    aa=plotComp(axes.flatten()[i], runplotdata, i)
+    aa=plotComp(axes.flatten()[i], runplotdata, i, "leafdisp", 15, 10)
 
 plt.tight_layout()
 
@@ -481,28 +417,67 @@ plt.tight_layout()
 python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
     -sims 100 \
     -steps 50 \
-    -leaffall 4
-    -leafdisp 6
+    -leaffall 4 \
+    -leafdisp 6 \
     -fileout "leaffall4__"
 
-## we'll also run a default model settings, see if we 
-## are repeating the results we first got from the 
-## model. In defaults, leafdisp is d=4.0, and leaffall
-## is 1
-
-python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
-    -sims 100 \
-    -steps 50 \
-    -fileout "leaffall1__"
-
-## put this into a script and...
+## but let's also try leaf dispersal at 4 and 5, so a minisweep
 
 #ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/leaffall4.sh"
-## PID 75418
+
 
 ############################################
 
+## priority effects
 
+## what sweep is next? 
+
+## what we call priority effects test - does have multiple 
+## additional fungi on your side to begin with help you 
+## win competition experiments?
+
+## using the default settings otherwise, sweep 
+## the number of additional initial fungi. This will
+## be two sweeps, one for decomps, one for viaphytes
+
+##  
+
+for i in 1 2 3 4 5 10 15; do
+python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -numdecomp i \
+    -fileout "numdecomp"$i"__"
+done
+
+## and the same for viaphytes
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/priorityDecomp.sh"
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/priorityViaphyte.sh"
+
+## these are going to be in the home of directory on cooley comp
+## forgot to change directory
+
+############################################
+
+## woodfreq
+
+## let's sweep through woodfreq,
+## because fuck why not
+
+cd /Users/danthomas/Documents/FA_ABM
+
+for i in {1..4}; do
+/usr/local/bin/python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
+    -sims 100 \
+    -steps 50 \
+    -woodfreq $i \
+    -fileout "woodfreq"$i"__"
+done
+
+
+ssh danthomas@10.4.2.6 "/bin/bash /Users/danthomas/Documents/scriptsABM/woodfreq.sh"
 
 ############################################
 
@@ -514,10 +489,15 @@ python3 /Users/danthomas/Documents/FA_ABM/runFA.py \
 
 ## if results look good from all available drafts, 
 ## set up remaining sweeps?: 
-numdecomp
-numendo
-woodfreq
+
 width
+
+## not going to do width, we'll keep the spatial 
+## scale the same
+
 kappa
 sigma
 mu
+
+## not sure how to play with these, these are somewhat 
+## like 
